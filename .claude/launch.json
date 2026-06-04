@@ -1,0 +1,14 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "frontend",
+      "runtimeExecutable": "/bin/bash",
+      "runtimeArgs": [
+        "-c",
+        "export PATH=\"/Users/trisatyakrisnawan/.nvm/versions/node/v24.16.0/bin:$PATH\"; cd \"/Users/trisatyakrisnawan/Documents/Claude/Projects/Stock Screener Project/frontend\"; exec npm run dev"
+      ],
+      "port": 3000
+    }
+  ]
+}

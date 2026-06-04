@@ -1,0 +1,47 @@
+name: Refresh data saham
+
+# Auto-refresh data (harga + laporan keuangan) secara terjadwal, lalu commit
+# JSON statis. Vercel akan redeploy otomatis pada setiap push -> situs jadi fresh.
+on:
+  schedule:
+    # Waktu UTC. WIB = UTC+7. IDX tutup 16:00 WIB (09:00 UTC).
+    - cron: "0 1 * * 1-5"    # 08:00 WIB  (pra-pasar, snapshot terbaru semalam)
+    - cron: "0 5 * * 1-5"    # 12:00 WIB  (tengah hari)
+    - cron: "30 9 * * 1-5"   # 16:30 WIB  (setelah penutupan)
+  workflow_dispatch: {}       # tombol "Run workflow" manual di GitHub
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-data
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: pip install -r backend/requirements.txt
+
+      - name: Generate static data
+        working-directory: backend
+        run: python generate_static.py
+
+      - name: Commit & push jika ada perubahan
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add frontend/public/data
+          if git diff --staged --quiet; then
+            echo "Tidak ada perubahan data."
+          else
+            git commit -m "chore: refresh data saham [skip ci]"
+            git push
+          fi
