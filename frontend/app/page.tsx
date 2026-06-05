@@ -26,9 +26,9 @@ export default function Dashboard() {
       .then(([i, o, s]) => {
         setIhsg(i);
         setOv(o);
-        // Top picks: skor >= 60, diurut upside tertinggi, ambil 6.
+        // Top picks: skor tinggi, TANPA warning (valuasi andal), diurut upside.
         const top = s.rows
-          .filter((r) => (r.score ?? 0) >= 60)
+          .filter((r) => (r.score ?? 0) >= 60 && (r.warnings?.length ?? 0) === 0)
           .sort((a, b) => (b.upside_pct ?? -1e9) - (a.upside_pct ?? -1e9))
           .slice(0, 6);
         setPicks(top);

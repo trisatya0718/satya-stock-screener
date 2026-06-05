@@ -1,5 +1,23 @@
 import { ReactNode } from "react";
+import { AlertTriangle } from "lucide-react";
 import { gradeColor, verdictColor } from "@/lib/format";
+import { WARNING_INFO } from "@/lib/api";
+
+export function WarningBadge({ warnings }: { warnings?: string[] }) {
+  if (!warnings || warnings.length === 0) return null;
+  const reasons = warnings
+    .map((w) => WARNING_INFO[w]?.label ?? w)
+    .join(", ");
+  return (
+    <span
+      title={`Warning: ${reasons}`}
+      className="inline-flex items-center gap-1 rounded-md border border-amber-500/40 bg-amber-500/10 px-1.5 py-0.5 text-[10px] font-medium text-amber-400"
+    >
+      <AlertTriangle size={11} />
+      {warnings.length}
+    </span>
+  );
+}
 
 export function Card({
   children,

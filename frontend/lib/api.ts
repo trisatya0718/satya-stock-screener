@@ -75,6 +75,7 @@ export interface ScreenerRow {
   upside_pct?: number | null;
   hold_years?: number | null;
   verdict?: string | null;
+  warnings?: string[];
 }
 
 export interface ScreenerResponse {
@@ -147,8 +148,25 @@ export interface StockDetail {
   bank_metrics?: BankMetrics | null;
   ratios: RatioPeriod[];
   valuation: Valuation;
+  warnings?: string[];
   updated_at?: string | null;
 }
+
+// Label & penjelasan tiap flag warning (dipakai di UI & halaman Info).
+export const WARNING_INFO: Record<string, { label: string; desc: string }> = {
+  upside_ekstrem: {
+    label: "Upside ekstrem",
+    desc: "Upside di atas 150% — fair value dari PE/PB band kemungkinan tidak andal (saham kecil / laba volatil).",
+  },
+  histori_tipis: {
+    label: "Histori tipis",
+    desc: "Tidak ada band valuasi historis yang memadai (<3 tahun) — valuasi low-confidence.",
+  },
+  laba_lonjakan: {
+    label: "Laba melonjak",
+    desc: "Laba YoY naik >120% — bisa bersifat sesaat/siklikal (mis. komoditas), belum tentu berkelanjutan.",
+  },
+};
 
 export interface RefreshStatus {
   running: boolean;

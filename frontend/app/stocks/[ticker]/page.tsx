@@ -11,12 +11,14 @@ import {
   Clock,
   TrendingUp,
   Info,
+  AlertTriangle,
 } from "lucide-react";
 import {
   getStock,
   getPriceHistory,
   StockDetail,
   PricePoint,
+  WARNING_INFO,
 } from "@/lib/api";
 import { Card, GradeBadge, VerdictBadge, Stat } from "@/components/ui";
 import PriceAreaChart from "@/components/PriceAreaChart";
@@ -78,6 +80,31 @@ export default function StockPage() {
           </div>
         </div>
       </div>
+
+      {/* Warning banner */}
+      {(d.warnings?.length ?? 0) > 0 && (
+        <Card className="border-amber-500/40 bg-amber-500/[0.06]">
+          <div className="flex items-start gap-3">
+            <AlertTriangle size={18} className="mt-0.5 shrink-0 text-amber-400" />
+            <div>
+              <div className="text-sm font-semibold text-amber-400">
+                Saham perlu kehati-hatian (Warning)
+              </div>
+              <ul className="mt-1 list-disc space-y-0.5 pl-4 text-xs text-muted">
+                {d.warnings?.map((w) => (
+                  <li key={w}>
+                    <span className="text-text">{WARNING_INFO[w]?.label ?? w}:</span>{" "}
+                    {WARNING_INFO[w]?.desc ?? ""}
+                  </li>
+                ))}
+              </ul>
+              <Link href="/info" className="mt-1 inline-block text-xs text-emerald-400 underline hover:no-underline">
+                Pelajari arti warning →
+              </Link>
+            </div>
+          </div>
+        </Card>
+      )}
 
       {/* Chart + Verdict */}
       <div className="grid gap-4 lg:grid-cols-3">

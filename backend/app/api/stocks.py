@@ -23,6 +23,7 @@ def _detail(a: dict) -> dict:
         "bank_metrics": a.get("bank_metrics"),
         "ratios": a.get("per_period") or [],
         "valuation": a.get("valuation") or {},
+        "warnings": a.get("warnings") or [],
         "updated_at": a.get("_updated_at"),
     }
 

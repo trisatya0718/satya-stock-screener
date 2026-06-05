@@ -2,9 +2,10 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { ArrowUpDown, Building2, Search } from "lucide-react";
 import { getScreener, ScreenerRow } from "@/lib/api";
-import { Card, GradeBadge, ScoreBar } from "@/components/ui";
+import { Card, GradeBadge, ScoreBar, WarningBadge } from "@/components/ui";
 import { changeColor, fmtPct, fmtPrice } from "@/lib/format";
 
 type SortKey =
@@ -32,6 +33,7 @@ export default function ScreenerPage() {
   const [loading, setLoading] = useState(true);
   const [q, setQ] = useState("");
   const [bank, setBank] = useState<"all" | "bank" | "nonbank">("all");
+  const [warn, setWarn] = useState<"all" | "warning" | "clean">("all");
   const [sector, setSector] = useState("all");
   const [minScore, setMinScore] = useState(0);
   const [sort, setSort] = useState<SortKey>("score");
@@ -51,6 +53,12 @@ export default function ScreenerPage() {
   const filtered = useMemo(() => {
     let r = rows.filter((x) => (x.score ?? 0) >= minScore);
     if (bank !== "all") r = r.filter((x) => x.is_bank === (bank === "bank"));
+    if (warn !== "all")
+      r = r.filter((x) =>
+        warn === "warning"
+          ? (x.warnings?.length ?? 0) > 0
+          : (x.warnings?.length ?? 0) === 0,
+      );
     if (sector !== "all") r = r.filter((x) => x.sector === sector);
     if (q.trim()) {
       const s = q.toLowerCase();
@@ -66,7 +74,12 @@ export default function ScreenerPage() {
       return desc ? bv - av : av - bv;
     });
     return r;
-  }, [rows, q, bank, sector, minScore, sort, desc]);
+  }, [rows, q, bank, warn, sector, minScore, sort, desc]);
+
+  const warnCount = useMemo(
+    () => rows.filter((r) => (r.warnings?.length ?? 0) > 0).length,
+    [rows],
+  );
 
   function toggleSort(k: SortKey) {
     if (k === sort) setDesc(!desc);
@@ -90,7 +103,11 @@ export default function ScreenerPage() {
           <span className="text-lime-400">B</span> ≥65 ·{" "}
           <span className="text-amber-400">C</span> ≥50 ·{" "}
           <span className="text-orange-400">D</span> ≥35 ·{" "}
-          <span className="text-red-400">E</span> &lt;35
+          <span className="text-red-400">E</span> &lt;35 ·{" "}
+          <span className="text-amber-400">⚠ {warnCount} warning</span> —{" "}
+          <Link href="/info" className="text-emerald-400 underline hover:no-underline">
+            apa ini?
+          </Link>
         </p>
       </div>
 
@@ -121,6 +138,24 @@ export default function ScreenerPage() {
               }`}
             >
               {b === "all" ? "Semua" : b === "bank" ? "Bank" : "Non-bank"}
+            </button>
+          ))}
+        </div>
+
+        <div className="flex items-center gap-1 rounded-xl border border-border bg-surface-2 p-1 text-xs">
+          {(["all", "clean", "warning"] as const).map((b) => (
+            <button
+              key={b}
+              onClick={() => setWarn(b)}
+              className={`rounded-lg px-3 py-1.5 transition-colors ${
+                warn === b
+                  ? b === "warning"
+                    ? "bg-amber-500/15 text-amber-400"
+                    : "bg-emerald-500/15 text-emerald-400"
+                  : "text-muted hover:text-text"
+              }`}
+            >
+              {b === "all" ? "Semua" : b === "clean" ? "Aman" : `⚠ Warning (${warnCount})`}
             </button>
           ))}
         </div>
@@ -205,6 +240,7 @@ export default function ScreenerPage() {
                           {r.is_bank && (
                             <Building2 size={12} className="text-sky-400" />
                           )}
+                          <WarningBadge warnings={r.warnings} />
                         </div>
                         <div className="line-clamp-1 max-w-44 text-xs text-muted">
                           {r.name}
@@ -242,8 +278,13 @@ export default function ScreenerPage() {
                     {r.pbv?.toFixed(2) ?? "—"}×
                   </td>
                   <td
-                    className={`px-3 py-3 text-right font-semibold tabular-nums ${changeColor(r.upside_pct)}`}
+                    className={`px-3 py-3 text-right font-semibold tabular-nums ${
+                      r.warnings?.includes("upside_ekstrem")
+                        ? "text-amber-400"
+                        : changeColor(r.upside_pct)
+                    }`}
                   >
+                    {r.warnings?.includes("upside_ekstrem") && "⚠ "}
                     {fmtPct(r.upside_pct)}
                   </td>
                   <td className="px-3 py-3 text-right tabular-nums text-muted">

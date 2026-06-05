@@ -32,6 +32,7 @@ def _to_row(a: dict) -> dict:
         "upside_pct": val.get("upside_pct"),
         "hold_years": val.get("hold_years"),
         "verdict": val.get("verdict"),
+        "warnings": a.get("warnings") or [],
     }
 
 
