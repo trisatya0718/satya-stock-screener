@@ -155,7 +155,11 @@ export default function ScreenerPage() {
                   : "text-muted hover:text-text"
               }`}
             >
-              {b === "all" ? "Semua" : b === "clean" ? "Aman" : `⚠ Warning (${warnCount})`}
+              {b === "all"
+                ? `Semua (${rows.length})`
+                : b === "clean"
+                  ? `Aman (${rows.length - warnCount})`
+                  : `⚠ Warning (${warnCount})`}
             </button>
           ))}
         </div>
