@@ -18,9 +18,11 @@ _session = creq.Session(impersonate="chrome")
 # Pemetaan label baris yfinance -> key ternormalisasi kita.
 _INCOME_MAP = {
     "Total Revenue": "total_revenue",
+    "Operating Revenue": "operating_revenue",
     "Cost Of Revenue": "cost_of_revenue",
     "Gross Profit": "gross_profit",
     "Operating Income": "operating_income",
+    "Operating Expense": "operating_expense",
     "Pretax Income": "pretax_income",
     "Net Income": "net_income",
     "Interest Income": "interest_income",
@@ -127,6 +129,8 @@ class YFinanceProvider:
             "beta": _num(info.get("beta")),
             "market_cap": _num(info.get("marketCap")),
             "yahoo_sector": info.get("sector"),
+            "industry": info.get("industry"),
+            "long_name": info.get("longName") or info.get("shortName"),
         }
 
     def get_financials(self, code: str) -> dict[str, Any]:

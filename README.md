@@ -29,7 +29,11 @@ frontend/  Next.js 16 + Tailwind v4 — UI
   (rencana) memperdalam history via XBRL.
 - **Cache:** SQLite (`backend/data/cache.db`) — analisa & data mentah disimpan agar
   bisa dihitung ulang offline tanpa fetch ulang.
-- **Universe MVP:** konstituen **LQ45** (~45 emiten, campur bank & non-bank).
+- **Universe:** seluruh emiten **likuid IDX** (papan Main + Development, ~760) dari
+  endpoint resmi IDX; yang **ditampilkan hanya skor > 60**. Sektor & bank dideteksi
+  dari yfinance `industry`/`sector`.
+- **Metrik bank:** NIM, CIR, ROE, ROA dihitung otomatis. NPL/CAR/CASA/LDR/BOPO diisi
+  manual via `backend/data/bank_manual.csv` (kolom `code,npl,car,casa,ldr,bopo`).
 
 ### Alur analisa
 `provider → ratios (DuPont) → score / banking → valuation → cache → API → UI`

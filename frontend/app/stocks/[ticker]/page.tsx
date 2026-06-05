@@ -193,20 +193,29 @@ export default function StockPage() {
           <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-muted">
             Metrik Bank
           </h2>
+          <div className="mb-2 text-xs font-medium text-emerald-400">
+            Dihitung otomatis
+          </div>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
             <Stat label="NIM (proxy)" value={fmtPct(d.bank_metrics.nim)} />
+            <Stat label="CIR (cost-to-income)" value={fmtPct(d.bank_metrics.cir)} />
             <Stat label="ROE" value={fmtPct(d.bank_metrics.roe)} />
             <Stat label="ROA" value={fmtPct(d.bank_metrics.roa)} />
-            <Stat label="NPL" value={fmtPct(d.bank_metrics.npl)} />
-            <Stat label="CAR" value={fmtPct(d.bank_metrics.car)} />
-            <Stat label="BOPO" value={fmtPct(d.bank_metrics.bopo)} />
-            <Stat label="LDR" value={fmtPct(d.bank_metrics.ldr)} />
-            <Stat label="CASA" value={fmtPct(d.bank_metrics.casa)} />
           </div>
-          <p className="mt-3 text-xs text-muted">
-            NPL, CAR, BOPO, LDR & CASA memerlukan disclosure bank dari IDX (akan
-            dilengkapi di iterasi berikutnya). NIM di sini proxy dari net interest
-            income / total aset.
+          <div className="mb-2 mt-5 text-xs font-medium text-sky-400">
+            Input manual {(d.bank_metrics.manual_fields?.length ?? 0) === 0 && "(belum diisi)"}
+          </div>
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+            <BankManualStat label="NPL" value={d.bank_metrics.npl} m={d.bank_metrics.manual_fields} k="npl" />
+            <BankManualStat label="CAR" value={d.bank_metrics.car} m={d.bank_metrics.manual_fields} k="car" />
+            <BankManualStat label="BOPO" value={d.bank_metrics.bopo} m={d.bank_metrics.manual_fields} k="bopo" />
+            <BankManualStat label="LDR" value={d.bank_metrics.ldr} m={d.bank_metrics.manual_fields} k="ldr" />
+            <BankManualStat label="CASA" value={d.bank_metrics.casa} m={d.bank_metrics.manual_fields} k="casa" />
+          </div>
+          <p className="mt-4 text-xs text-muted">
+            NIM = net interest income / aset (proxy). CIR ≈ beban operasional /
+            pendapatan operasional. NPL, CAR, BOPO, LDR & CASA tak tersedia gratis dari
+            laporan standar → isi manual di <code>backend/data/bank_manual.csv</code>.
           </p>
         </Card>
       )}
@@ -252,6 +261,33 @@ export default function StockPage() {
         Update terakhir: {d.updated_at ? new Date(d.updated_at).toLocaleString("id-ID") : "—"} ·
         Bukan rekomendasi jual/beli. Lakukan riset Anda sendiri.
       </p>
+    </div>
+  );
+}
+
+function BankManualStat({
+  label,
+  value,
+  m,
+  k,
+}: {
+  label: string;
+  value?: number | null;
+  m?: string[];
+  k: string;
+}) {
+  const isManual = m?.includes(k);
+  return (
+    <div>
+      <div className="flex items-center gap-1.5 text-xs uppercase tracking-wide text-muted">
+        {label}
+        {isManual && (
+          <span className="rounded bg-sky-500/15 px-1 text-[9px] text-sky-400">
+            manual
+          </span>
+        )}
+      </div>
+      <div className="mt-1 text-lg font-semibold tabular-nums">{fmtPct(value)}</div>
     </div>
   );
 }

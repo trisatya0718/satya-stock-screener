@@ -52,6 +52,7 @@ export interface MarketOverview {
   unchanged: number;
   avg_score: number;
   total_emiten: number;
+  total_analyzed?: number;
   updated_at: string | null;
 }
 
@@ -114,6 +115,7 @@ export interface Valuation {
 
 export interface BankMetrics {
   nim?: number | null;
+  cir?: number | null;
   npl?: number | null;
   casa?: number | null;
   car?: number | null;
@@ -121,6 +123,7 @@ export interface BankMetrics {
   ldr?: number | null;
   roe?: number | null;
   roa?: number | null;
+  manual_fields?: string[];
 }
 
 export interface DupontBreakdown {

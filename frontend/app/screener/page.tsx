@@ -32,6 +32,7 @@ export default function ScreenerPage() {
   const [loading, setLoading] = useState(true);
   const [q, setQ] = useState("");
   const [bank, setBank] = useState<"all" | "bank" | "nonbank">("all");
+  const [sector, setSector] = useState("all");
   const [minScore, setMinScore] = useState(0);
   const [sort, setSort] = useState<SortKey>("score");
   const [desc, setDesc] = useState(true);
@@ -42,9 +43,15 @@ export default function ScreenerPage() {
       .finally(() => setLoading(false));
   }, []);
 
+  const sectors = useMemo(
+    () => Array.from(new Set(rows.map((r) => r.sector).filter(Boolean))).sort(),
+    [rows],
+  );
+
   const filtered = useMemo(() => {
     let r = rows.filter((x) => (x.score ?? 0) >= minScore);
     if (bank !== "all") r = r.filter((x) => x.is_bank === (bank === "bank"));
+    if (sector !== "all") r = r.filter((x) => x.sector === sector);
     if (q.trim()) {
       const s = q.toLowerCase();
       r = r.filter(
@@ -59,7 +66,7 @@ export default function ScreenerPage() {
       return desc ? bv - av : av - bv;
     });
     return r;
-  }, [rows, q, bank, minScore, sort, desc]);
+  }, [rows, q, bank, sector, minScore, sort, desc]);
 
   function toggleSort(k: SortKey) {
     if (k === sort) setDesc(!desc);
@@ -74,8 +81,9 @@ export default function ScreenerPage() {
       <div>
         <h1 className="text-2xl font-bold">Screener Fundamental</h1>
         <p className="text-sm text-muted">
-          {filtered.length} emiten · skor gabungan profitabilitas, pertumbuhan,
-          tren margin & kualitas (DuPont).
+          {filtered.length} emiten lolos skor &gt;60 (dari ~760 emiten likuid IDX
+          yang dianalisa) · skor DuPont: profitabilitas, pertumbuhan, tren margin
+          & kualitas.
         </p>
         <p className="mt-1 text-xs text-muted">
           Grade: <span className="text-emerald-400">A</span> ≥80 ·{" "}
@@ -117,6 +125,19 @@ export default function ScreenerPage() {
           ))}
         </div>
 
+        <select
+          value={sector}
+          onChange={(e) => setSector(e.target.value)}
+          className="rounded-xl border border-border bg-surface-2 px-3 py-2 text-xs text-text outline-none focus:border-emerald-500/40"
+        >
+          <option value="all">Semua sektor</option>
+          {sectors.map((s) => (
+            <option key={s} value={s}>
+              {s}
+            </option>
+          ))}
+        </select>
+
         <label className="flex items-center gap-2 text-xs text-muted">
           Min skor: <span className="font-mono text-text">{minScore}</span>
           <input
@@ -137,6 +158,7 @@ export default function ScreenerPage() {
           <thead>
             <tr className="border-b border-border text-left text-xs uppercase tracking-wide text-muted">
               <th className="px-4 py-3">Emiten</th>
+              <th className="px-3 py-3">Sektor</th>
               <th className="px-3 py-3 text-right">Harga</th>
               {COLS.map((c) => (
                 <th key={c.key} className="px-3 py-3 text-right">
@@ -157,13 +179,13 @@ export default function ScreenerPage() {
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan={10} className="px-4 py-10 text-center text-muted">
+                <td colSpan={11} className="px-4 py-10 text-center text-muted">
                   Memuat…
                 </td>
               </tr>
             ) : filtered.length === 0 ? (
               <tr>
-                <td colSpan={10} className="px-4 py-10 text-center text-muted">
+                <td colSpan={11} className="px-4 py-10 text-center text-muted">
                   Tidak ada emiten cocok. Sudah klik Refresh?
                 </td>
               </tr>
@@ -189,6 +211,11 @@ export default function ScreenerPage() {
                         </div>
                       </div>
                     </div>
+                  </td>
+                  <td className="px-3 py-3">
+                    <span className="inline-block rounded-md bg-white/5 px-2 py-0.5 text-xs text-muted">
+                      {r.sector || "—"}
+                    </span>
                   </td>
                   <td className="px-3 py-3 text-right">
                     <div className="font-medium tabular-nums">{fmtPrice(r.price)}</div>

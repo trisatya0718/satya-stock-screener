@@ -5,9 +5,8 @@ name: Refresh data saham
 on:
   schedule:
     # Waktu UTC. WIB = UTC+7. IDX tutup 16:00 WIB (09:00 UTC).
-    - cron: "0 1 * * 1-5"    # 08:00 WIB  (pra-pasar, snapshot terbaru semalam)
-    - cron: "0 5 * * 1-5"    # 12:00 WIB  (tengah hari)
-    - cron: "30 9 * * 1-5"   # 16:30 WIB  (setelah penutupan)
+    # Run berat (~760 emiten) cukup 1×/hari setelah penutupan pasar.
+    - cron: "30 9 * * 1-5"   # 16:30 WIB (setelah penutupan, hari kerja)
   workflow_dispatch: {}       # tombol "Run workflow" manual di GitHub
 
 permissions:
@@ -20,6 +19,7 @@ concurrency:
 jobs:
   refresh:
     runs-on: ubuntu-latest
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
 

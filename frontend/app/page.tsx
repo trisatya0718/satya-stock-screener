@@ -43,7 +43,11 @@ export default function Dashboard() {
       <div>
         <h1 className="text-2xl font-bold">Dashboard</h1>
         <p className="text-sm text-muted">
-          Ringkasan pasar & saham fundamental terbaik (universe LQ45).
+          Ringkasan pasar & saham fundamental terbaik
+          {ov?.total_analyzed
+            ? ` — ${ov.total_emiten} lolos skor >60 dari ${ov.total_analyzed} emiten dianalisa`
+            : " (emiten IDX likuid)"}
+          .
         </p>
       </div>
 
@@ -114,7 +118,7 @@ export default function Dashboard() {
               {ov?.avg_score ?? "—"}
             </div>
             <div className="text-xs text-muted">
-              dari {ov?.total_emiten ?? 0} emiten dianalisa
+              dari {ov?.total_emiten ?? 0} emiten lolos skor &gt;60
             </div>
           </Card>
         </div>

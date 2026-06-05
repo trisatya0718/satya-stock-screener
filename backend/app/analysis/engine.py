@@ -8,12 +8,19 @@ from __future__ import annotations
 from typing import Any
 
 from app.analysis import banking, ratios, score, valuation
+from app.core.universe import classify
 
 
 def analyze(emiten: dict[str, Any], raw: dict[str, Any]) -> dict[str, Any]:
-    """`emiten` = {code,name,sector,is_bank}; `raw` = {quote,financials,price_history}."""
-    is_bank = emiten["is_bank"]
+    """`emiten` = {code,name,sector?,is_bank?}; `raw` = {quote,financials,price_history}.
+
+    sector/is_bank boleh None (emiten di luar daftar statis) -> diturunkan dari quote.
+    """
     quote = raw.get("quote") or {}
+    auto_sector, auto_is_bank = classify(quote.get("industry"), quote.get("yahoo_sector"))
+    is_bank = emiten["is_bank"] if emiten.get("is_bank") is not None else auto_is_bank
+    sector = emiten.get("sector") or auto_sector
+    name = emiten.get("name") or quote.get("long_name") or emiten["code"]
     fin = raw.get("financials") or {}
     quarterly = fin.get("quarterly") or []
     annual = fin.get("annual") or []
@@ -27,7 +34,7 @@ def analyze(emiten: dict[str, Any], raw: dict[str, Any]) -> dict[str, Any]:
 
     bank_m = None
     if is_bank:
-        bank_m = banking.bank_metrics(quarterly, headline)
+        bank_m = banking.bank_metrics(quarterly, headline, code=emiten["code"])
         sc = banking.bank_score(headline, bank_m, earn_growth)
     else:
         sc = score.fundamental_score(headline, per_period, rev_growth, earn_growth)
@@ -44,8 +51,8 @@ def analyze(emiten: dict[str, Any], raw: dict[str, Any]) -> dict[str, Any]:
 
     return {
         "code": emiten["code"],
-        "name": emiten["name"],
-        "sector": emiten["sector"],
+        "name": name,
+        "sector": sector,
         "is_bank": is_bank,
         "price": quote.get("price"),
         "change_pct": quote.get("change_pct"),

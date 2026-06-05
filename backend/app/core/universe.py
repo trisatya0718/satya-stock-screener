@@ -74,3 +74,30 @@ BY_CODE: dict[str, Emiten] = {e.code: e for e in UNIVERSE}
 
 def get_emiten(code: str) -> Emiten | None:
     return BY_CODE.get(code.upper())
+
+
+# Pemetaan sektor Yahoo -> label Indonesia untuk UI.
+_SECTOR_MAP = {
+    "Financial Services": "Keuangan",
+    "Consumer Defensive": "Konsumer",
+    "Consumer Cyclical": "Konsumer Siklikal",
+    "Basic Materials": "Industri Dasar",
+    "Energy": "Energi",
+    "Industrials": "Industri",
+    "Technology": "Teknologi",
+    "Communication Services": "Telekomunikasi",
+    "Healthcare": "Kesehatan",
+    "Real Estate": "Properti",
+    "Utilities": "Utilitas",
+}
+
+
+def classify(industry: str | None, yahoo_sector: str | None) -> tuple[str, bool]:
+    """Dari industry/sector Yahoo -> (label sektor Indonesia, is_bank).
+
+    Bank dideteksi dari industry yang mengandung 'bank' (mis. 'Banks—Regional').
+    """
+    ind = (industry or "").lower()
+    is_bank = "bank" in ind
+    sector = _SECTOR_MAP.get(yahoo_sector or "", yahoo_sector or "Lainnya")
+    return sector, is_bank
