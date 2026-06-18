@@ -99,6 +99,24 @@ export default function InfoPage() {
         </p>
       </Card>
 
+      <Card className="border-amber-500/30">
+        <h2 className="mb-2 text-base font-semibold text-amber-400">
+          Tab Trading (sinyal swing)
+        </h2>
+        <p className="text-sm leading-relaxed text-muted">
+          Tab <b className="text-text">Trading</b> berbeda dari screener fundamental:
+          ia mencari setup teknikal jangka pendek (~1–3 hari) dari ~760 emiten likuid,
+          memakai tren (MA20/MA50), breakout, lonjakan volume, RSI, dan{" "}
+          <b className="text-text">ATR</b> untuk Entry / Stop Loss / Take Profit dengan
+          risk:reward 1:2. Maksimal 10 setup/hari.
+        </p>
+        <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-muted">
+          <li><b className="text-text">Spekulatif & risiko tinggi</b> — bukan rekomendasi.</li>
+          <li>Tidak ada jaminan win rate; target realistis &gt;60% hanya dengan disiplin stop loss.</li>
+          <li>Berbasis data harian (bukan intraday) & belum memakai berita.</li>
+        </ul>
+      </Card>
+
       <Card className="border-border">
         <h2 className="mb-2 text-base font-semibold">Batasan</h2>
         <ul className="list-disc space-y-1 pl-5 text-sm text-muted">

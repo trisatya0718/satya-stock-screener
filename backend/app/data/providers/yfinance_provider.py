@@ -133,6 +133,35 @@ class YFinanceProvider:
             "long_name": info.get("longName") or info.get("shortName"),
         }
 
+    def download_prices(self, codes: list[str], period: str = "1y",
+                        chunk: int = 80) -> dict[str, list[dict[str, Any]]]:
+        """Batch-download OHLCV harian untuk banyak emiten (jauh lebih cepat).
+
+        Dipakai untuk scan trading atas seluruh universe likuid.
+        """
+        out: dict[str, list[dict[str, Any]]] = {}
+        for i in range(0, len(codes), chunk):
+            batch = codes[i:i + chunk]
+            syms = [f"{c}.JK" for c in batch]
+            try:
+                df = _retry(lambda: yf.download(
+                    syms, period=period, interval="1d", group_by="ticker",
+                    auto_adjust=False, threads=True, progress=False, session=_session,
+                ))
+            except Exception:  # noqa: BLE001
+                continue
+            for code in batch:
+                sym = f"{code}.JK"
+                try:
+                    sub = df[sym] if sym in df.columns.get_level_values(0) else None
+                except Exception:  # noqa: BLE001
+                    sub = None
+                if sub is None or sub.empty:
+                    continue
+                out[code] = _ohlcv_points(sub)
+            time.sleep(0.5)
+        return out
+
     def get_financials(self, code: str) -> dict[str, Any]:
         t = _ticker(code)
         q_inc = _retry(lambda: t.quarterly_income_stmt)
@@ -153,6 +182,20 @@ def _num(v) -> float | None:
     except (TypeError, ValueError):
         return None
     return None if pd.isna(f) else f
+
+
+def _ohlcv_points(sub: pd.DataFrame) -> list[dict[str, Any]]:
+    """DataFrame OHLCV (kolom Open/High/Low/Close/Volume) -> list point."""
+    sub = sub.dropna(subset=["Close"])
+    points: list[dict[str, Any]] = []
+    for idx, row in sub.iterrows():
+        points.append({
+            "date": str(pd.Timestamp(idx).date()),
+            "open": _num(row.get("Open")), "high": _num(row.get("High")),
+            "low": _num(row.get("Low")), "close": _num(row.get("Close")),
+            "volume": _num(row.get("Volume")),
+        })
+    return points
 
 
 def _history_to_points(hist: pd.DataFrame) -> list[dict[str, Any]]:

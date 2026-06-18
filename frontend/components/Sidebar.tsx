@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Filter, LineChart, TrendingUp, Info } from "lucide-react";
+import { LayoutDashboard, Filter, LineChart, TrendingUp, Info, Activity } from "lucide-react";
 
 const NAV = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
   { href: "/screener", label: "Screener", icon: Filter },
+  { href: "/trading", label: "Trading", icon: Activity },
   { href: "/info", label: "Info & Catatan", icon: Info },
 ];
 

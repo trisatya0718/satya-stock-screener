@@ -210,6 +210,37 @@ export const getPriceHistory = async (code: string) => {
   );
 };
 
+export interface TradingPick {
+  code: string;
+  name?: string | null;
+  sector?: string | null;
+  price?: number | null;
+  change_pct?: number | null;
+  setup_score: number;
+  entry: number;
+  stop_loss: number;
+  take_profit: number;
+  rr: number;
+  risk_pct: number;
+  reward_pct: number;
+  rsi: number;
+  atr: number;
+  volume_ratio: number;
+  avg_value: number;
+  signals: string[];
+}
+
+export interface TradingResponse {
+  picks: TradingPick[];
+  count: number;
+  updated_at: string | null;
+}
+
+export const getTrading = () =>
+  STATIC
+    ? getStatic<TradingResponse>("trading.json")
+    : getJSON<TradingResponse>("/api/trading");
+
 export const getRefreshStatus = async (): Promise<RefreshStatus> => {
   if (STATIC) {
     const m = await getStatic<{ updated_at: string; ok: number }>("meta.json");

@@ -112,6 +112,29 @@ def main() -> None:
             "prev_close": round(prev, 2), "history": ihsg_hist, "updated_at": now,
         })
 
+    # ---- Sinyal trading (swing 1-3 hari) atas SELURUH universe likuid ----
+    # Batch-download harga (cepat) supaya tak terbatas pada saham skor>60.
+    from app.analysis.trading import scan as trading_scan
+
+    name_by = {c["code"]: c.get("name") for c in codes}
+    sector_by = {a["code"]: a.get("sector") for a in final}
+    prices = provider.download_prices([c["code"] for c in codes], period="1y")
+    ems_tr = []
+    for code, hist in prices.items():
+        if not hist:
+            continue
+        last = hist[-1]["close"]
+        prev = hist[-2]["close"] if len(hist) > 1 else last
+        ems_tr.append({
+            "code": code, "name": name_by.get(code), "sector": sector_by.get(code),
+            "price": last,
+            "change_pct": round((last - prev) / prev * 100, 2) if prev else None,
+            "price_history": hist,
+        })
+    picks = trading_scan(ems_tr, top=10)
+    print(f"Trading: {len(prices)} harga diunduh, {len(picks)} setup")
+    _write("trading.json", {"picks": picks, "count": len(picks), "updated_at": now})
+
     # ---- Screener + overview + meta ----
     rows = [_to_row(a) for a in final]
     rows.sort(key=lambda r: r.get("score") or 0, reverse=True)
