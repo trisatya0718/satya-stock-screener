@@ -101,7 +101,7 @@ export default function CryptoPage() {
       </div>
 
       {err && (
-        <Card className="border-red-500/30 text-sm text-red-400">
+        <Card className="border-red-500/30 text-sm text-red-600">
           Gagal memuat data Binance: {err}. Coba muat ulang — atau API Binance tidak
           terjangkau dari jaringan Anda.
         </Card>
@@ -129,7 +129,7 @@ export default function CryptoPage() {
             <span className="flex items-center gap-1.5 text-xs text-muted">
               <RefreshCw size={12} className={loading ? "animate-spin" : ""} />
               live 30s · EMA20 <span className="text-terra">▬</span> EMA50{" "}
-              <span style={{color:"#a1887f"}}>▬</span>
+              <span style={{color:"#8d7264"}}>▬</span>
             </span>
           </div>
           {candles.length > 0 ? (
@@ -179,7 +179,7 @@ export default function CryptoPage() {
               </div>
             ) : (
               <div className="flex items-start gap-2 rounded-xl bg-surface-2/60 p-3 text-sm text-muted">
-                <PauseCircle size={16} className="mt-0.5 shrink-0 text-amber-400" />
+                <PauseCircle size={16} className="mt-0.5 shrink-0 text-amber-600" />
                 Sinyal belum cukup kuat (confluence lemah / pasar ranging). Lebih aman
                 menunggu — tidak ada posisi juga merupakan keputusan.
               </div>
@@ -205,7 +205,7 @@ export default function CryptoPage() {
             {a && [...a.cautions, ...sentimentNotes(fg, a.bias)].length > 0 && (
               <div className="mt-3 space-y-1 border-t border-border pt-2">
                 {[...a.cautions, ...sentimentNotes(fg, a.bias)].map((c) => (
-                  <div key={c} className="flex items-start gap-1.5 text-xs text-amber-400">
+                  <div key={c} className="flex items-start gap-1.5 text-xs text-amber-600">
                     <AlertTriangle size={12} className="mt-0.5 shrink-0" />
                     {c}
                   </div>
@@ -233,7 +233,7 @@ export default function CryptoPage() {
                 label="Fear & Greed"
                 value={fg ? `${fg.value} · ${fg.label}` : "—"}
                 valueClass={
-                  !fg ? "" : fg.value <= 25 ? "text-down" : fg.value >= 75 ? "text-up" : "text-amber-400"
+                  !fg ? "" : fg.value <= 25 ? "text-down" : fg.value >= 75 ? "text-up" : "text-amber-600"
                 }
               />
             </div>
@@ -270,10 +270,10 @@ export default function CryptoPage() {
 function BiasBadge({ bias }: { bias: Analysis["bias"] }) {
   const cls =
     bias === "LONG"
-      ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-400"
+      ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-600"
       : bias === "SHORT"
-        ? "border-red-500/40 bg-red-500/10 text-red-400"
-        : "border-amber-500/40 bg-amber-500/10 text-amber-400";
+        ? "border-red-500/40 bg-red-500/10 text-red-600"
+        : "border-amber-500/40 bg-amber-500/10 text-amber-600";
   return <Badge className={`${cls} px-3 py-1 text-sm font-bold`}>{bias}</Badge>;
 }
 

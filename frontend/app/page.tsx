@@ -52,7 +52,7 @@ export default function Dashboard() {
       </div>
 
       {err && (
-        <Card className="border-red-500/30 text-sm text-red-400">
+        <Card className="border-red-500/30 text-sm text-red-600">
           Gagal memuat data: {err}. Pastikan backend berjalan & sudah di-Refresh.
         </Card>
       )}
@@ -81,7 +81,7 @@ export default function Dashboard() {
           {ihsg && ihsg.history.length > 0 ? (
             <PriceAreaChart
               data={ihsg.history}
-              color={up ? "#5fa878" : "#e25549"}
+              color={up ? "#3e8e5a" : "#c94a35"}
             />
           ) : (
             <div className="flex h-[260px] items-center justify-center text-sm text-muted">
@@ -166,7 +166,7 @@ export default function Dashboard() {
                     </div>
                     <div className="text-right">
                       <div className="text-xs text-muted">Upside</div>
-                      <div className="text-lg font-bold tabular-nums text-emerald-400">
+                      <div className="text-lg font-bold tabular-nums text-emerald-600">
                         {fmtPct(r.upside_pct)}
                       </div>
                     </div>

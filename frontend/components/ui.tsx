@@ -11,7 +11,7 @@ export function WarningBadge({ warnings }: { warnings?: string[] }) {
   return (
     <span
       title={`Warning: ${reasons}`}
-      className="inline-flex items-center gap-1 rounded-md border border-amber-500/40 bg-amber-500/10 px-1.5 py-0.5 text-[10px] font-medium text-amber-400"
+      className="inline-flex items-center gap-1 rounded-md border border-amber-500/40 bg-amber-500/10 px-1.5 py-0.5 text-[10px] font-medium text-amber-600"
     >
       <AlertTriangle size={11} />
       {warnings.length}
@@ -70,7 +70,7 @@ export function ScoreBar({ score }: { score: number }) {
     score >= 65 ? "bg-emerald-400" : score >= 50 ? "bg-amber-400" : "bg-red-400";
   return (
     <div className="flex items-center gap-2">
-      <div className="h-1.5 w-16 overflow-hidden rounded-full bg-white/8">
+      <div className="h-1.5 w-16 overflow-hidden rounded-full bg-black/10">
         <div
           className={`h-full rounded-full ${color}`}
           style={{ width: `${Math.min(100, score)}%` }}

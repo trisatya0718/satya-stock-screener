@@ -40,7 +40,7 @@ export default function StockPage() {
 
   if (err)
     return (
-      <Card className="mx-auto max-w-2xl border-red-500/30 text-sm text-red-400">
+      <Card className="mx-auto max-w-2xl border-red-500/30 text-sm text-red-600">
         {err}. Coba klik Refresh untuk menarik data {code}.
       </Card>
     );
@@ -85,9 +85,9 @@ export default function StockPage() {
       {(d.warnings?.length ?? 0) > 0 && (
         <Card className="border-amber-500/40 bg-amber-500/[0.06]">
           <div className="flex items-start gap-3">
-            <AlertTriangle size={18} className="mt-0.5 shrink-0 text-amber-400" />
+            <AlertTriangle size={18} className="mt-0.5 shrink-0 text-amber-600" />
             <div>
-              <div className="text-sm font-semibold text-amber-400">
+              <div className="text-sm font-semibold text-amber-600">
                 Saham perlu kehati-hatian (Warning)
               </div>
               <ul className="mt-1 list-disc space-y-0.5 pl-4 text-xs text-muted">
@@ -113,7 +113,7 @@ export default function StockPage() {
             Harga 3 Tahun
           </div>
           {hist.length > 0 ? (
-            <PriceAreaChart data={hist} color={up ? "#5fa878" : "#e25549"} />
+            <PriceAreaChart data={hist} color={up ? "#3e8e5a" : "#c94a35"} />
           ) : (
             <div className="flex h-[260px] items-center justify-center text-sm text-muted">
               Memuat grafik…
@@ -150,7 +150,7 @@ export default function StockPage() {
               />
             </div>
             <div className="flex items-center gap-3">
-              <Clock size={16} className="text-amber-400" />
+              <Clock size={16} className="text-amber-600" />
               <Stat
                 label="Estimasi Hold"
                 value={v.hold_years ? `${v.hold_years} tahun` : "—"}
@@ -208,7 +208,7 @@ export default function StockPage() {
         </div>
         {d.dupont.driver && (
           <p className="mt-4 flex items-start gap-2 rounded-xl bg-surface-2/60 p-3 text-sm text-muted">
-            <TrendingUp size={15} className="mt-0.5 shrink-0 text-emerald-400" />
+            <TrendingUp size={15} className="mt-0.5 shrink-0 text-emerald-600" />
             {d.dupont.driver}
           </p>
         )}
@@ -220,7 +220,7 @@ export default function StockPage() {
           <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-muted">
             Metrik Bank
           </h2>
-          <div className="mb-2 text-xs font-medium text-emerald-400">
+          <div className="mb-2 text-xs font-medium text-emerald-600">
             Dihitung otomatis
           </div>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
@@ -338,7 +338,7 @@ function DupontFactor({
     >
       <div className="text-xs text-muted">{label}</div>
       <div
-        className={`mt-0.5 text-lg font-bold tabular-nums ${highlight ? "text-emerald-400" : ""}`}
+        className={`mt-0.5 text-lg font-bold tabular-nums ${highlight ? "text-emerald-600" : ""}`}
       >
         {value}
       </div>

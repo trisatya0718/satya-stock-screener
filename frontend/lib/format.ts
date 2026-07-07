@@ -27,26 +27,26 @@ export const changeColor = (v?: number | null): string =>
 export const gradeColor = (grade: string): string => {
   switch (grade) {
     case "A":
-      return "bg-emerald-500/15 text-emerald-400 border-emerald-500/30";
+      return "bg-emerald-500/15 text-emerald-600 border-emerald-500/30";
     case "B":
-      return "bg-lime-500/15 text-lime-400 border-lime-500/30";
+      return "bg-lime-500/15 text-lime-600 border-lime-500/30";
     case "C":
-      return "bg-amber-500/15 text-amber-400 border-amber-500/30";
+      return "bg-amber-500/15 text-amber-600 border-amber-500/30";
     case "D":
-      return "bg-orange-500/15 text-orange-400 border-orange-500/30";
+      return "bg-orange-500/15 text-orange-600 border-orange-500/30";
     default:
-      return "bg-red-500/15 text-red-400 border-red-500/30";
+      return "bg-red-500/15 text-red-600 border-red-500/30";
   }
 };
 
 export const verdictColor = (verdict: string): string => {
   switch (verdict) {
     case "BUY":
-      return "bg-emerald-500/15 text-emerald-400 border-emerald-500/40";
+      return "bg-emerald-500/15 text-emerald-600 border-emerald-500/40";
     case "WAIT":
-      return "bg-amber-500/15 text-amber-400 border-amber-500/40";
+      return "bg-amber-500/15 text-amber-600 border-amber-500/40";
     case "AVOID":
-      return "bg-red-500/15 text-red-400 border-red-500/40";
+      return "bg-red-500/15 text-red-600 border-red-500/40";
     default:
       return "bg-zinc-500/15 text-zinc-400 border-zinc-500/40";
   }

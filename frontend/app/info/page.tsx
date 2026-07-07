@@ -28,16 +28,16 @@ export default function InfoPage() {
           untuk memperkirakan harga wajar, upside, dan lama hold.
         </p>
         <div className="mt-3 text-sm text-muted">
-          Grade: <span className="text-emerald-400">A</span> ≥80 ·{" "}
-          <span className="text-lime-400">B</span> ≥65 ·{" "}
-          <span className="text-amber-400">C</span> ≥50 ·{" "}
-          <span className="text-orange-400">D</span> ≥35 ·{" "}
-          <span className="text-red-400">E</span> &lt;35
+          Grade: <span className="text-emerald-600">A</span> ≥80 ·{" "}
+          <span className="text-lime-600">B</span> ≥65 ·{" "}
+          <span className="text-amber-600">C</span> ≥50 ·{" "}
+          <span className="text-orange-600">D</span> ≥35 ·{" "}
+          <span className="text-red-600">E</span> &lt;35
         </div>
       </Card>
 
       <Card className="border-amber-500/30">
-        <h2 className="mb-3 flex items-center gap-2 text-base font-semibold text-amber-400">
+        <h2 className="mb-3 flex items-center gap-2 text-base font-semibold text-amber-600">
           <AlertTriangle size={18} /> Tanda Peringatan (Warning)
         </h2>
         <p className="mb-3 text-sm text-muted">
@@ -48,7 +48,7 @@ export default function InfoPage() {
         <div className="space-y-3">
           {Object.entries(WARNING_INFO).map(([k, v]) => (
             <div key={k} className="rounded-xl bg-surface-2/60 p-3">
-              <div className="text-sm font-semibold text-amber-400">{v.label}</div>
+              <div className="text-sm font-semibold text-amber-600">{v.label}</div>
               <div className="text-sm text-muted">{v.desc}</div>
             </div>
           ))}
@@ -100,7 +100,7 @@ export default function InfoPage() {
       </Card>
 
       <Card className="border-amber-500/30">
-        <h2 className="mb-2 text-base font-semibold text-amber-400">
+        <h2 className="mb-2 text-base font-semibold text-amber-600">
           Tab Trading (sinyal swing)
         </h2>
         <p className="text-sm leading-relaxed text-muted">
@@ -118,7 +118,7 @@ export default function InfoPage() {
       </Card>
 
       <Card className="border-amber-500/30">
-        <h2 className="mb-2 text-base font-semibold text-amber-400">
+        <h2 className="mb-2 text-base font-semibold text-amber-600">
           Tab Crypto (BTC/USDT)
         </h2>
         <p className="text-sm leading-relaxed text-muted">

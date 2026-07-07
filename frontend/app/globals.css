@@ -1,19 +1,19 @@
 @import "tailwindcss";
 
-/* Palet terracotta: tanah liat gelap + aksen terakota, nuansa editorial hangat. */
+/* Palet terracotta TERANG: krem tanah liat + aksen terakota bakar. */
 @theme {
-  --color-bg: #1b1411;
-  --color-surface: #251b16;
-  --color-surface-2: #30231c;
-  --color-border: #443228;
-  --color-muted: #b3a294;
-  --color-text: #f2e7de;
-  --color-terra: #d67d54;
-  --color-terra-dim: #b4613f;
-  --color-accent: #d67d54;
-  --color-up: #5fa878;
-  --color-down: #e25549;
-  --color-warn: #d9a03d;
+  --color-bg: #f6ede2;
+  --color-surface: #fffdf8;
+  --color-surface-2: #f1e5d6;
+  --color-border: #e2d0bc;
+  --color-muted: #8a7565;
+  --color-text: #3b2c22;
+  --color-terra: #bd5d3a;
+  --color-terra-dim: #a04e30;
+  --color-accent: #bd5d3a;
+  --color-up: #3e8e5a;
+  --color-down: #c94a35;
+  --color-warn: #b07818;
   --font-sans: var(--font-ss3), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-lora), Georgia, "Times New Roman", serif;
   --font-mono: var(--font-plex-mono), ui-monospace, monospace;
@@ -22,6 +22,7 @@
 html {
   background: var(--color-bg);
   color: var(--color-text);
+  color-scheme: light;
 }
 
 body {
@@ -36,16 +37,17 @@ h1, h2 {
 }
 
 ::selection {
-  background: rgba(214, 125, 84, 0.3);
+  background: rgba(189, 93, 58, 0.25);
 }
 
 ::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-thumb { background: #46352a; border-radius: 8px; }
-::-webkit-scrollbar-thumb:hover { background: #574335; }
+::-webkit-scrollbar-thumb { background: #d8c3ab; border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: #c9b096; }
 ::-webkit-scrollbar-track { background: transparent; }
 
 @utility card {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(90, 60, 40, 0.05);
 }

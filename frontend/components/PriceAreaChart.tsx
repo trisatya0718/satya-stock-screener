@@ -33,7 +33,7 @@ export default function PriceAreaChart({
         </defs>
         <XAxis
           dataKey="date"
-          tick={{ fill: "#b3a294", fontSize: 11 }}
+          tick={{ fill: "#8a7565", fontSize: 11 }}
           tickLine={false}
           axisLine={false}
           minTickGap={48}
@@ -46,7 +46,7 @@ export default function PriceAreaChart({
         />
         <YAxis
           domain={["auto", "auto"]}
-          tick={{ fill: "#b3a294", fontSize: 11 }}
+          tick={{ fill: "#8a7565", fontSize: 11 }}
           tickLine={false}
           axisLine={false}
           width={48}
@@ -54,12 +54,12 @@ export default function PriceAreaChart({
         />
         <Tooltip
           contentStyle={{
-            background: "#251b16",
-            border: "1px solid #443228",
+            background: "#fffdf8",
+            border: "1px solid #e2d0bc",
             borderRadius: 12,
             fontSize: 12,
           }}
-          labelStyle={{ color: "#b3a294" }}
+          labelStyle={{ color: "#8a7565" }}
           formatter={(v) => [Number(v).toLocaleString("id-ID"), "Close"]}
           labelFormatter={(d) =>
             new Date(String(d)).toLocaleDateString("id-ID", {

@@ -39,15 +39,15 @@ export default function CryptoChart({
         height,
         layout: {
           background: { color: "transparent" },
-          textColor: "#b3a294",
+          textColor: "#8a7565",
           attributionLogo: false,
         },
         grid: {
-          vertLines: { color: "rgba(68,50,40,0.5)" },
-          horzLines: { color: "rgba(68,50,40,0.5)" },
+          vertLines: { color: "rgba(150,120,95,0.25)" },
+          horzLines: { color: "rgba(150,120,95,0.25)" },
         },
-        rightPriceScale: { borderColor: "#443228" },
-        timeScale: { borderColor: "#443228", timeVisible: true },
+        rightPriceScale: { borderColor: "#e2d0bc" },
+        timeScale: { borderColor: "#e2d0bc", timeVisible: true },
         crosshair: { mode: 0 },
         autoSize: true,
       });
@@ -60,13 +60,13 @@ export default function CryptoChart({
         wickDownColor: "#e25549",
       });
       const ema20Series = chart.addSeries(LineSeries, {
-        color: "#e3b23c",
+        color: "#b58224",
         lineWidth: 1,
         priceLineVisible: false,
         lastValueVisible: false,
       });
       const ema50Series = chart.addSeries(LineSeries, {
-        color: "#a1887f",
+        color: "#8d7264",
         lineWidth: 1,
         priceLineVisible: false,
         lastValueVisible: false,
@@ -132,17 +132,17 @@ export default function CryptoChart({
       };
       if (analysis) {
         if (analysis.bias !== "WAIT" && analysis.entry && analysis.stop) {
-          addLine(analysis.entry, "#f2e7de", "Entry", 0, 2);
+          addLine(analysis.entry, "#3b2c22", "Entry", 0, 2);
           addLine(analysis.stop, "#e25549", "Stop Loss", 0, 2);
           if (analysis.tp1) addLine(analysis.tp1, "#5fa878", "TP1", 0, 2);
           if (analysis.tp2) addLine(analysis.tp2, "#5fa878", "TP2", 0, 2);
         }
         // Resistance merah / Support hijau, bernomor dari yang terdekat harga
         analysis.resistances.forEach((r, i) =>
-          addLine(r, "rgba(226,85,73,0.85)", `Resistance ${i + 1}`, 2),
+          addLine(r, "rgba(201,74,53,0.9)", `Resistance ${i + 1}`, 2),
         );
         analysis.supports.forEach((sp, i) =>
-          addLine(sp, "rgba(95,168,120,0.85)", `Support ${i + 1}`, 2),
+          addLine(sp, "rgba(62,142,90,0.9)", `Support ${i + 1}`, 2),
         );
       }
     }

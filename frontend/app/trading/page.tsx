@@ -55,7 +55,7 @@ export default function TradingPage() {
                     >
                       {p.code}
                     </Link>
-                    <Badge className="border-amber-500/40 bg-amber-500/10 text-amber-400">
+                    <Badge className="border-amber-500/40 bg-amber-500/10 text-amber-600">
                       setup {p.setup_score}
                     </Badge>
                   </div>

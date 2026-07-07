@@ -99,12 +99,12 @@ export default function ScreenerPage() {
           & kualitas.
         </p>
         <p className="mt-1 text-xs text-muted">
-          Grade: <span className="text-emerald-400">A</span> ≥80 ·{" "}
-          <span className="text-lime-400">B</span> ≥65 ·{" "}
-          <span className="text-amber-400">C</span> ≥50 ·{" "}
-          <span className="text-orange-400">D</span> ≥35 ·{" "}
-          <span className="text-red-400">E</span> &lt;35 ·{" "}
-          <span className="text-amber-400">⚠ {warnCount} warning</span> —{" "}
+          Grade: <span className="text-emerald-600">A</span> ≥80 ·{" "}
+          <span className="text-lime-600">B</span> ≥65 ·{" "}
+          <span className="text-amber-600">C</span> ≥50 ·{" "}
+          <span className="text-orange-600">D</span> ≥35 ·{" "}
+          <span className="text-red-600">E</span> &lt;35 ·{" "}
+          <span className="text-amber-600">⚠ {warnCount} warning</span> —{" "}
           <Link href="/info" className="text-terra underline hover:no-underline">
             apa ini?
           </Link>
@@ -133,7 +133,7 @@ export default function ScreenerPage() {
               onClick={() => setBank(b)}
               className={`rounded-lg px-3 py-1.5 capitalize transition-colors ${
                 bank === b
-                  ? "bg-emerald-500/15 text-emerald-400"
+                  ? "bg-emerald-500/15 text-emerald-600"
                   : "text-muted hover:text-text"
               }`}
             >
@@ -150,8 +150,8 @@ export default function ScreenerPage() {
               className={`rounded-lg px-3 py-1.5 transition-colors ${
                 warn === b
                   ? b === "warning"
-                    ? "bg-amber-500/15 text-amber-400"
-                    : "bg-emerald-500/15 text-emerald-400"
+                    ? "bg-amber-500/15 text-amber-600"
+                    : "bg-emerald-500/15 text-emerald-600"
                   : "text-muted hover:text-text"
               }`}
             >
@@ -204,7 +204,7 @@ export default function ScreenerPage() {
                   <button
                     onClick={() => toggleSort(c.key)}
                     className={`inline-flex items-center gap-1 hover:text-text ${
-                      sort === c.key ? "text-emerald-400" : ""
+                      sort === c.key ? "text-emerald-600" : ""
                     }`}
                   >
                     {c.label}
@@ -233,7 +233,7 @@ export default function ScreenerPage() {
                 <tr
                   key={r.code}
                   onClick={() => router.push(`/stocks/${r.code}`)}
-                  className="cursor-pointer border-b border-border/60 transition-colors hover:bg-white/[0.03]"
+                  className="cursor-pointer border-b border-border/60 transition-colors hover:bg-black/[0.03]"
                 >
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
@@ -253,7 +253,7 @@ export default function ScreenerPage() {
                     </div>
                   </td>
                   <td className="px-3 py-3">
-                    <span className="inline-block rounded-md bg-white/5 px-2 py-0.5 text-xs text-muted">
+                    <span className="inline-block rounded-md bg-black/5 px-2 py-0.5 text-xs text-muted">
                       {r.sector || "—"}
                     </span>
                   </td>
@@ -284,7 +284,7 @@ export default function ScreenerPage() {
                   <td
                     className={`px-3 py-3 text-right font-semibold tabular-nums ${
                       r.warnings?.includes("upside_ekstrem")
-                        ? "text-amber-400"
+                        ? "text-amber-600"
                         : changeColor(r.upside_pct)
                     }`}
                   >
