@@ -98,7 +98,7 @@ export default function StockPage() {
                   </li>
                 ))}
               </ul>
-              <Link href="/info" className="mt-1 inline-block text-xs text-emerald-400 underline hover:no-underline">
+              <Link href="/info" className="mt-1 inline-block text-xs text-amber-400 underline hover:no-underline">
                 Pelajari arti warning →
               </Link>
             </div>

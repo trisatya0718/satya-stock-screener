@@ -120,25 +120,30 @@ export default function CryptoChart({
       // bersihkan garis lama lalu gambar ulang
       for (const pl of priceLinesRef.current) s.removePriceLine(pl);
       priceLinesRef.current = [];
-      const addLine = (price: number, color: string, title: string, style = 0) => {
+      const addLine = (
+        price: number, color: string, title: string, style = 0, width = 1,
+      ) => {
         priceLinesRef.current.push(
           s.createPriceLine({
-            price, color, lineWidth: 1, lineStyle: style,
+            price, color, lineWidth: width, lineStyle: style,
             axisLabelVisible: true, title,
           }),
         );
       };
       if (analysis) {
         if (analysis.bias !== "WAIT" && analysis.entry && analysis.stop) {
-          addLine(analysis.entry, "#60a5fa", "Entry");
-          addLine(analysis.stop, "#ef4444", "SL");
-          if (analysis.tp1) addLine(analysis.tp1, "#22c55e", "TP1");
-          if (analysis.tp2) addLine(analysis.tp2, "#10b981", "TP2");
+          addLine(analysis.entry, "#7ab8f5", "Entry", 0, 2);
+          addLine(analysis.stop, "#e05d51", "Stop Loss", 0, 2);
+          if (analysis.tp1) addLine(analysis.tp1, "#4caf6d", "TP1", 0, 2);
+          if (analysis.tp2) addLine(analysis.tp2, "#4caf6d", "TP2", 0, 2);
         }
-        for (const r of analysis.resistances)
-          addLine(r, "rgba(139,147,167,0.6)", "R", 2);
-        for (const sp of analysis.supports)
-          addLine(sp, "rgba(139,147,167,0.6)", "S", 2);
+        // Resistance merah / Support hijau, bernomor dari yang terdekat harga
+        analysis.resistances.forEach((r, i) =>
+          addLine(r, "rgba(224,93,81,0.85)", `Resistance ${i + 1}`, 2),
+        );
+        analysis.supports.forEach((sp, i) =>
+          addLine(sp, "rgba(76,175,109,0.85)", `Support ${i + 1}`, 2),
+        );
       }
     }
   }, [candles, analysis]);

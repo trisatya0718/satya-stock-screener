@@ -3,8 +3,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import {
-  Bitcoin,
-  ShieldAlert,
   Target,
   TrendingUp,
   TrendingDown,
@@ -18,9 +16,12 @@ import {
   analyze,
   fetchKlines,
   fetchTicker,
+  fetchFearGreed,
+  sentimentNotes,
   fmtUsd,
   Analysis,
   Candle,
+  FearGreed,
   HTF,
   Interval,
   Ticker24h,
@@ -33,6 +34,7 @@ export default function CryptoPage() {
   const [interval_, setInterval_] = useState<Interval>("1h");
   const [candles, setCandles] = useState<Candle[]>([]);
   const [ticker, setTicker] = useState<Ticker24h | null>(null);
+  const [fg, setFg] = useState<FearGreed | null>(null);
   const [analysis, setAnalysis] = useState<Analysis | null>(null);
   const [updatedAt, setUpdatedAt] = useState<Date | null>(null);
   const [err, setErr] = useState<string | null>(null);
@@ -41,13 +43,15 @@ export default function CryptoPage() {
 
   const load = useCallback(async (iv: Interval) => {
     try {
-      const [main, htf, tk] = await Promise.all([
+      const [main, htf, tk, sentiment] = await Promise.all([
         fetchKlines(iv, 400),
         fetchKlines(HTF[iv], 250),
         fetchTicker(),
+        fetchFearGreed(),
       ]);
       setCandles(main);
       setTicker(tk);
+      setFg(sentiment);
       setAnalysis(analyze(main, htf));
       setUpdatedAt(new Date());
       setErr(null);
@@ -76,15 +80,13 @@ export default function CryptoPage() {
       {/* Header harga live */}
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="flex items-center gap-2 text-2xl font-bold">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/15">
-              <Bitcoin size={20} className="text-amber-400" />
-            </span>
-            BTC / USDT
-          </h1>
+          <h1 className="text-2xl font-bold">BTC / USDT</h1>
           <p className="text-sm text-muted">
-            Analisa teknikal live · data Binance, update otomatis tiap 30 detik
-            {updatedAt && ` · terakhir ${updatedAt.toLocaleTimeString("id-ID")}`}
+            Analisa teknikal live · update tiap 30 detik
+            {updatedAt && ` · terakhir ${updatedAt.toLocaleTimeString("id-ID")}`} ·{" "}
+            <Link href="/info" className="text-amber-400 underline hover:no-underline">
+              disclaimer
+            </Link>
           </p>
         </div>
         <div className="text-right">
@@ -97,40 +99,6 @@ export default function CryptoPage() {
           </div>
         </div>
       </div>
-
-      {/* DISCLAIMER */}
-      <Card className="border-amber-500/50 bg-amber-500/[0.07]">
-        <div className="flex items-start gap-3">
-          <ShieldAlert size={20} className="mt-0.5 shrink-0 text-amber-400" />
-          <div className="space-y-1 text-sm">
-            <div className="font-semibold text-amber-400">
-              Disclaimer — crypto berisiko SANGAT tinggi
-            </div>
-            <ul className="list-disc space-y-0.5 pl-4 text-muted">
-              <li>
-                Sinyal teknikal otomatis, <b className="text-text">bukan rekomendasi</b>.
-                <b className="text-text"> Tidak ada strategi dengan win-rate terjamin</b> —
-                banyak sinyal akan salah; disiplin stop loss adalah keharusan.
-              </li>
-              <li>
-                BTC bergerak 24/7 dan bisa ±5–10% dalam hitungan jam. Jangan pakai
-                leverage berlebihan; sinyal SHORT hanya relevan untuk futures (risiko
-                likuidasi).
-              </li>
-              <li>
-                Analisa murni teknikal — <b className="text-text">tidak membaca berita</b>{" "}
-                (halving, regulasi, makro) yang bisa membatalkan setup seketika.
-              </li>
-            </ul>
-            <Link
-              href="/info"
-              className="inline-block pt-0.5 text-emerald-400 underline hover:no-underline"
-            >
-              Baca metodologi & batasan →
-            </Link>
-          </div>
-        </div>
-      </Card>
 
       {err && (
         <Card className="border-red-500/30 text-sm text-red-400">
@@ -234,9 +202,9 @@ export default function CryptoPage() {
                 </li>
               ))}
             </ul>
-            {a && a.cautions.length > 0 && (
+            {a && [...a.cautions, ...sentimentNotes(fg, a.bias)].length > 0 && (
               <div className="mt-3 space-y-1 border-t border-border pt-2">
-                {a.cautions.map((c) => (
+                {[...a.cautions, ...sentimentNotes(fg, a.bias)].map((c) => (
                   <div key={c} className="flex items-start gap-1.5 text-xs text-amber-400">
                     <AlertTriangle size={12} className="mt-0.5 shrink-0" />
                     {c}
@@ -261,15 +229,34 @@ export default function CryptoPage() {
               />
               <Metric label="EMA50" value={fmtUsd(a?.ema50)} />
               <Metric label="EMA200" value={fmtUsd(a?.ema200)} />
+              <Metric
+                label="Fear & Greed"
+                value={fg ? `${fg.value} · ${fg.label}` : "—"}
+                valueClass={
+                  !fg ? "" : fg.value <= 25 ? "text-down" : fg.value >= 75 ? "text-up" : "text-amber-400"
+                }
+              />
             </div>
             {a && (a.supports.length > 0 || a.resistances.length > 0) && (
-              <div className="mt-3 border-t border-border pt-2 text-xs text-muted">
-                <div>
-                  Resistance: {a.resistances.map((r) => fmtUsd(r)).join(" · ") || "—"}
-                </div>
-                <div>
-                  Support: {a.supports.map((s) => fmtUsd(s)).join(" · ") || "—"}
-                </div>
+              <div className="mt-3 space-y-1.5 border-t border-border pt-2.5 text-xs">
+                {a.resistances.map((r, i) => (
+                  <div key={`r${i}`} className="flex items-center justify-between">
+                    <span className="flex items-center gap-1.5 text-muted">
+                      <span className="inline-block h-0.5 w-4 rounded bg-down" />
+                      Resistance {i + 1}
+                    </span>
+                    <span className="font-medium tabular-nums text-down">{fmtUsd(r)}</span>
+                  </div>
+                ))}
+                {a.supports.map((s, i) => (
+                  <div key={`s${i}`} className="flex items-center justify-between">
+                    <span className="flex items-center gap-1.5 text-muted">
+                      <span className="inline-block h-0.5 w-4 rounded bg-up" />
+                      Support {i + 1}
+                    </span>
+                    <span className="font-medium tabular-nums text-up">{fmtUsd(s)}</span>
+                  </div>
+                ))}
               </div>
             )}
           </Card>

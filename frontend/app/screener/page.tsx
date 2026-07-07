@@ -105,7 +105,7 @@ export default function ScreenerPage() {
           <span className="text-orange-400">D</span> ≥35 ·{" "}
           <span className="text-red-400">E</span> &lt;35 ·{" "}
           <span className="text-amber-400">⚠ {warnCount} warning</span> —{" "}
-          <Link href="/info" className="text-emerald-400 underline hover:no-underline">
+          <Link href="/info" className="text-amber-400 underline hover:no-underline">
             apa ini?
           </Link>
         </p>
@@ -122,7 +122,7 @@ export default function ScreenerPage() {
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Cari kode / nama emiten…"
-            className="w-full rounded-xl border border-border bg-surface-2 py-2 pl-9 pr-3 text-sm outline-none focus:border-emerald-500/40"
+            className="w-full rounded-xl border border-border bg-surface-2 py-2 pl-9 pr-3 text-sm outline-none focus:border-amber-400/40"
           />
         </div>
 
@@ -167,7 +167,7 @@ export default function ScreenerPage() {
         <select
           value={sector}
           onChange={(e) => setSector(e.target.value)}
-          className="rounded-xl border border-border bg-surface-2 px-3 py-2 text-xs text-text outline-none focus:border-emerald-500/40"
+          className="rounded-xl border border-border bg-surface-2 px-3 py-2 text-xs text-text outline-none focus:border-amber-400/40"
         >
           <option value="all">Semua sektor</option>
           {sectors.map((s) => (
@@ -186,7 +186,7 @@ export default function ScreenerPage() {
             step={5}
             value={minScore}
             onChange={(e) => setMinScore(Number(e.target.value))}
-            className="accent-emerald-400"
+            className="accent-amber-400"
           />
         </label>
       </Card>

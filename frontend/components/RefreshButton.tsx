@@ -65,7 +65,7 @@ export default function RefreshButton() {
         onClick={onClick}
         disabled={running}
         title={STATIC ? "Data diperbarui otomatis secara terjadwal" : "Tarik & analisa data terbaru"}
-        className="inline-flex items-center gap-2 rounded-xl border border-border bg-surface-2 px-3.5 py-2 text-sm font-medium text-text transition-colors hover:border-emerald-500/40 hover:text-emerald-400 disabled:opacity-60"
+        className="inline-flex items-center gap-2 rounded-xl border border-border bg-surface-2 px-3.5 py-2 text-sm font-medium text-text transition-colors hover:border-amber-400/40 hover:text-amber-400 disabled:opacity-60"
       >
         <RefreshCw size={15} className={running ? "animate-spin" : ""} />
         {STATIC ? "Muat ulang" : running ? "Memproses" : "Refresh"}

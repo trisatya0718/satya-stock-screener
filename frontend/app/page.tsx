@@ -142,7 +142,7 @@ export default function Dashboard() {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {picks.map((r) => (
               <Link key={r.code} href={`/stocks/${r.code}`}>
-                <Card className="transition-colors hover:border-emerald-500/40">
+                <Card className="transition-colors hover:border-amber-400/40">
                   <div className="flex items-start justify-between">
                     <div>
                       <div className="flex items-center gap-2">

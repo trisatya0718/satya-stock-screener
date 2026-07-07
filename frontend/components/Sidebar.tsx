@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Filter, LineChart, TrendingUp, Info, Activity, Bitcoin } from "lucide-react";
+import { LayoutDashboard, Filter, Info, Activity, Bitcoin } from "lucide-react";
 
 const NAV = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
@@ -15,17 +15,12 @@ const NAV = [
 export default function Sidebar() {
   const path = usePathname();
   return (
-    <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-border bg-surface/40 px-4 py-6 backdrop-blur md:flex">
-      <Link href="/" className="mb-8 flex items-center gap-2 px-2">
-        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-400 to-emerald-600 text-black">
-          <TrendingUp size={20} strokeWidth={2.5} />
+    <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-border bg-surface/60 px-4 py-6 md:flex">
+      <Link href="/" className="mb-8 px-2">
+        <div className="text-base font-bold leading-tight tracking-tight">
+          <span className="text-amber-400">Satya</span> Stock Screener
         </div>
-        <div>
-          <div className="text-[13px] font-bold leading-tight">
-            Satya Stock Screener
-          </div>
-          <div className="text-[10px] text-muted">IDX Fundamental</div>
-        </div>
+        <div className="text-[11px] text-muted">Fundamental & teknikal IDX</div>
       </Link>
 
       <nav className="flex flex-col gap-1">
@@ -35,9 +30,9 @@ export default function Sidebar() {
             <Link
               key={href}
               href={href}
-              className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors ${
+              className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors ${
                 active
-                  ? "bg-emerald-500/10 text-emerald-400"
+                  ? "bg-amber-400/10 text-amber-400"
                   : "text-muted hover:bg-white/5 hover:text-text"
               }`}
             >
@@ -48,11 +43,10 @@ export default function Sidebar() {
         })}
       </nav>
 
-      <div className="mt-auto rounded-xl border border-border bg-surface-2/50 p-3 text-[11px] leading-relaxed text-muted">
-        <LineChart size={14} className="mb-1 text-emerald-400" />
-        Analisa fundamental DuPont + valuasi PE/PB band. Data delayed via Yahoo
-        Finance — bukan rekomendasi jual/beli.
-      </div>
+      <p className="mt-auto px-2 text-[11px] leading-relaxed text-muted">
+        Analisa DuPont + valuasi PE/PB band. Data delayed via Yahoo Finance — bukan
+        rekomendasi jual/beli.
+      </p>
     </aside>
   );
 }

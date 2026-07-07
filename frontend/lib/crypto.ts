@@ -291,6 +291,40 @@ export function analyze(candles: Candle[], htfCandles: Candle[] | null): Analysi
   };
 }
 
+// ---------- Sentimen (Fear & Greed Index, alternative.me — gratis & CORS terbuka) ----------
+
+export interface FearGreed {
+  value: number; // 0..100
+  label: string; // "Extreme Fear" ... "Extreme Greed"
+}
+
+export async function fetchFearGreed(): Promise<FearGreed | null> {
+  try {
+    const res = await fetch("https://api.alternative.me/fng/?limit=1", {
+      cache: "no-store",
+    });
+    if (!res.ok) return null;
+    const d = await res.json();
+    const row = d?.data?.[0];
+    if (!row) return null;
+    return { value: Number(row.value), label: String(row.value_classification) };
+  } catch {
+    return null;
+  }
+}
+
+// Catatan sentimen kontrarian: ekstrem greed melemahkan LONG, ekstrem fear
+// melemahkan SHORT (rawan rebound). Dipakai sebagai lapisan konteks, bukan sinyal.
+export function sentimentNotes(fg: FearGreed | null, bias: Analysis["bias"]): string[] {
+  if (!fg) return [];
+  const notes: string[] = [];
+  if (fg.value >= 75 && bias === "LONG")
+    notes.push(`Fear & Greed ${fg.value} (${fg.label}) — pasar serakah, rawan koreksi; kecilkan posisi`);
+  if (fg.value <= 25 && bias === "SHORT")
+    notes.push(`Fear & Greed ${fg.value} (${fg.label}) — pasar takut ekstrem, rawan rebound melawan short`);
+  return notes;
+}
+
 export const fmtUsd = (v?: number | null, digits = 0): string =>
   v === null || v === undefined
     ? "—"

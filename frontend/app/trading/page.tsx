@@ -39,40 +39,16 @@ export default function TradingPage() {
         </p>
       </div>
 
-      {/* DISCLAIMER */}
-      <Card className="border-amber-500/50 bg-amber-500/[0.07]">
-        <div className="flex items-start gap-3">
-          <ShieldAlert size={20} className="mt-0.5 shrink-0 text-amber-400" />
-          <div className="space-y-1.5 text-sm">
-            <div className="font-semibold text-amber-400">
-              Disclaimer — wajib dibaca
-            </div>
-            <ul className="list-disc space-y-1 pl-4 text-muted">
-              <li>
-                Ini <b className="text-text">sinyal teknikal spekulatif</b>, BUKAN
-                rekomendasi jual/beli. Risiko tinggi — bisa rugi.
-              </li>
-              <li>
-                <b className="text-text">Tidak ada jaminan win rate.</b> Target
-                realistis &gt;60% hanya tercapai bila disiplin pakai stop loss & money
-                management. Banyak setup tetap akan gagal.
-              </li>
-              <li>
-                Berbasis data harga <b className="text-text">harian (delayed)</b>, bukan
-                intraday realtime. <b className="text-text">Belum mempertimbangkan berita</b>{" "}
-                (sumber berita gratis andal tidak tersedia).
-              </li>
-              <li>
-                Selalu pasang <b className="text-text">Stop Loss</b>, jangan over-leverage,
-                pakai dana yang siap hilang. Keputusan & risiko sepenuhnya milik Anda.
-              </li>
-            </ul>
-            <Link href="/info" className="inline-block pt-1 text-emerald-400 underline hover:no-underline">
-              Baca metodologi & batasan →
-            </Link>
-          </div>
-        </div>
-      </Card>
+      <p className="flex items-start gap-2 text-xs leading-relaxed text-muted">
+        <ShieldAlert size={14} className="mt-0.5 shrink-0 text-amber-400" />
+        <span>
+          Sinyal teknikal spekulatif — bukan rekomendasi, tanpa jaminan win rate.
+          Disiplin stop loss & money management wajib.{" "}
+          <Link href="/info" className="text-amber-400 underline hover:no-underline">
+            Selengkapnya
+          </Link>
+        </span>
+      </p>
 
       {loading ? (
         <div className="py-16 text-center text-muted">Memuat setup…</div>

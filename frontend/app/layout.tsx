@@ -4,7 +4,6 @@ import "./globals.css";
 import Sidebar from "@/components/Sidebar";
 import BottomNav from "@/components/BottomNav";
 import RefreshButton from "@/components/RefreshButton";
-import { TrendingUp } from "lucide-react";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
@@ -29,11 +28,10 @@ export default function RootLayout({
           <div className="flex min-h-screen flex-1 flex-col">
             <header className="sticky top-0 z-10 flex items-center justify-between gap-2 border-b border-border bg-bg/70 px-4 py-3 backdrop-blur md:px-8">
               {/* Brand di mobile (sidebar tersembunyi), teks pasar di desktop */}
-              <div className="flex items-center gap-2 md:hidden">
-                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-400 to-emerald-600 text-black">
-                  <TrendingUp size={16} strokeWidth={2.5} />
-                </div>
-                <span className="text-sm font-bold leading-tight">Satya Stock Screener</span>
+              <div className="md:hidden">
+                <span className="text-sm font-bold leading-tight">
+                  <span className="text-amber-400">Satya</span> Stock Screener
+                </span>
               </div>
               <div className="hidden text-sm text-muted md:block">
                 Bursa Efek Indonesia · Analisa Fundamental
