@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Filter, LineChart, TrendingUp, Info, Activity } from "lucide-react";
+import { LayoutDashboard, Filter, LineChart, TrendingUp, Info, Activity, Bitcoin } from "lucide-react";
 
 const NAV = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
   { href: "/screener", label: "Screener", icon: Filter },
   { href: "/trading", label: "Trading", icon: Activity },
+  { href: "/crypto", label: "Crypto · BTC", icon: Bitcoin },
   { href: "/info", label: "Info & Catatan", icon: Info },
 ];
 

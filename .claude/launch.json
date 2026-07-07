@@ -11,6 +11,15 @@
       "port": 3000
     },
     {
+      "name": "duitku",
+      "runtimeExecutable": "/bin/bash",
+      "runtimeArgs": [
+        "-c",
+        "export PATH=\"/Users/trisatyakrisnawan/.nvm/versions/node/v24.16.0/bin:$PATH\"; cd \"/Users/trisatyakrisnawan/Documents/Claude/Projects/finance-tracker\"; exec npm run dev -- --port 3100"
+      ],
+      "port": 3100
+    },
+    {
       "name": "ride-check",
       "runtimeExecutable": "/bin/bash",
       "runtimeArgs": [

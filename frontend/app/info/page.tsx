@@ -117,6 +117,27 @@ export default function InfoPage() {
         </ul>
       </Card>
 
+      <Card className="border-amber-500/30">
+        <h2 className="mb-2 text-base font-semibold text-amber-400">
+          Tab Crypto (BTC/USDT)
+        </h2>
+        <p className="text-sm leading-relaxed text-muted">
+          Analisa teknikal <b className="text-text">realtime</b> (data Binance, update
+          tiap 30 detik) dengan strategi{" "}
+          <b className="text-text">trend-following confluence</b>: sinyal LONG/SHORT
+          hanya muncul bila beberapa indikator searah sekaligus — tren EMA50/EMA200,
+          konfirmasi timeframe lebih besar, MACD, RSI. Entry / Stop Loss / TP1 / TP2
+          dihitung dari <b className="text-text">ATR</b> dan di-snap ke
+          support/resistance terdekat. Bila confluence lemah, sistem jujur menampilkan{" "}
+          <b className="text-text">WAIT</b> (tanpa sinyal).
+        </p>
+        <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-muted">
+          <li><b className="text-text">Tidak ada win-rate yang dijamin</b> — sinyal teknikal bisa dan akan sering salah.</li>
+          <li>Crypto bergerak 24/7 dan sangat volatil; SHORT hanya untuk futures (risiko likuidasi).</li>
+          <li>Tidak membaca berita/makro — kejadian fundamental bisa membatalkan setup seketika.</li>
+        </ul>
+      </Card>
+
       <Card className="border-border">
         <h2 className="mb-2 text-base font-semibold">Batasan</h2>
         <ul className="list-disc space-y-1 pl-5 text-sm text-muted">
