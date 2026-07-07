@@ -66,7 +66,7 @@ export default function StockPage() {
           <div>
             <h1 className="flex items-center gap-2 text-2xl font-bold">
               {d.code}
-              {d.is_bank && <Building2 size={18} className="text-sky-400" />}
+              {d.is_bank && <Building2 size={18} className="text-muted" />}
             </h1>
             <p className="text-sm text-muted">
               {d.name} · {d.sector}
@@ -98,7 +98,7 @@ export default function StockPage() {
                   </li>
                 ))}
               </ul>
-              <Link href="/info" className="mt-1 inline-block text-xs text-amber-400 underline hover:no-underline">
+              <Link href="/info" className="mt-1 inline-block text-xs text-terra underline hover:no-underline">
                 Pelajari arti warning →
               </Link>
             </div>
@@ -113,7 +113,7 @@ export default function StockPage() {
             Harga 3 Tahun
           </div>
           {hist.length > 0 ? (
-            <PriceAreaChart data={hist} color={up ? "#34d399" : "#ef4444"} />
+            <PriceAreaChart data={hist} color={up ? "#5fa878" : "#e25549"} />
           ) : (
             <div className="flex h-[260px] items-center justify-center text-sm text-muted">
               Memuat grafik…
@@ -130,7 +130,7 @@ export default function StockPage() {
           </div>
           <div className="space-y-3">
             <div className="flex items-center gap-3">
-              <Target size={16} className="text-emerald-400" />
+              <Target size={16} className="text-terra" />
               <Stat label="Fair Value" value={fmtPrice(v.fair_value)} />
               <div className="ml-auto text-right">
                 <div className="text-xs text-muted">Upside</div>
@@ -142,7 +142,7 @@ export default function StockPage() {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <Wallet size={16} className="text-sky-400" />
+              <Wallet size={16} className="text-muted" />
               <Stat
                 label="Beli di Bawah"
                 value={fmtPrice(v.buy_price)}
@@ -229,7 +229,7 @@ export default function StockPage() {
             <Stat label="ROE" value={fmtPct(d.bank_metrics.roe)} />
             <Stat label="ROA" value={fmtPct(d.bank_metrics.roa)} />
           </div>
-          <div className="mb-2 mt-5 text-xs font-medium text-sky-400">
+          <div className="mb-2 mt-5 text-xs font-medium text-muted">
             Input manual {(d.bank_metrics.manual_fields?.length ?? 0) === 0 && "(belum diisi)"}
           </div>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
@@ -309,7 +309,7 @@ function BankManualStat({
       <div className="flex items-center gap-1.5 text-xs uppercase tracking-wide text-muted">
         {label}
         {isManual && (
-          <span className="rounded bg-sky-500/15 px-1 text-[9px] text-sky-400">
+          <span className="rounded bg-sky-500/15 px-1 text-[9px] text-muted">
             manual
           </span>
         )}

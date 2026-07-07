@@ -16,9 +16,9 @@ export default function Sidebar() {
   const path = usePathname();
   return (
     <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-border bg-surface/60 px-4 py-6 md:flex">
-      <Link href="/" className="mb-8 px-2">
+      <Link href="/" className="mb-8 px-2 font-serif">
         <div className="text-base font-bold leading-tight tracking-tight">
-          <span className="text-amber-400">Satya</span> Stock Screener
+          <span className="text-terra">Satya</span> Stock Screener
         </div>
         <div className="text-[11px] text-muted">Fundamental & teknikal IDX</div>
       </Link>
@@ -32,7 +32,7 @@ export default function Sidebar() {
               href={href}
               className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors ${
                 active
-                  ? "bg-amber-400/10 text-amber-400"
+                  ? "bg-terra/10 text-terra"
                   : "text-muted hover:bg-white/5 hover:text-text"
               }`}
             >

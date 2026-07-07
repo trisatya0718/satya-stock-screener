@@ -39,34 +39,34 @@ export default function CryptoChart({
         height,
         layout: {
           background: { color: "transparent" },
-          textColor: "#8b93a7",
+          textColor: "#b3a294",
           attributionLogo: false,
         },
         grid: {
-          vertLines: { color: "rgba(35,39,51,0.5)" },
-          horzLines: { color: "rgba(35,39,51,0.5)" },
+          vertLines: { color: "rgba(68,50,40,0.5)" },
+          horzLines: { color: "rgba(68,50,40,0.5)" },
         },
-        rightPriceScale: { borderColor: "#232733" },
-        timeScale: { borderColor: "#232733", timeVisible: true },
+        rightPriceScale: { borderColor: "#443228" },
+        timeScale: { borderColor: "#443228", timeVisible: true },
         crosshair: { mode: 0 },
         autoSize: true,
       });
       const candleSeries = chart.addSeries(CandlestickSeries, {
-        upColor: "#22c55e",
-        downColor: "#ef4444",
-        borderUpColor: "#22c55e",
-        borderDownColor: "#ef4444",
-        wickUpColor: "#22c55e",
-        wickDownColor: "#ef4444",
+        upColor: "#5fa878",
+        downColor: "#e25549",
+        borderUpColor: "#5fa878",
+        borderDownColor: "#e25549",
+        wickUpColor: "#5fa878",
+        wickDownColor: "#e25549",
       });
       const ema20Series = chart.addSeries(LineSeries, {
-        color: "#60a5fa",
+        color: "#e3b23c",
         lineWidth: 1,
         priceLineVisible: false,
         lastValueVisible: false,
       });
       const ema50Series = chart.addSeries(LineSeries, {
-        color: "#a78bfa",
+        color: "#a1887f",
         lineWidth: 1,
         priceLineVisible: false,
         lastValueVisible: false,
@@ -132,17 +132,17 @@ export default function CryptoChart({
       };
       if (analysis) {
         if (analysis.bias !== "WAIT" && analysis.entry && analysis.stop) {
-          addLine(analysis.entry, "#7ab8f5", "Entry", 0, 2);
-          addLine(analysis.stop, "#e05d51", "Stop Loss", 0, 2);
-          if (analysis.tp1) addLine(analysis.tp1, "#4caf6d", "TP1", 0, 2);
-          if (analysis.tp2) addLine(analysis.tp2, "#4caf6d", "TP2", 0, 2);
+          addLine(analysis.entry, "#f2e7de", "Entry", 0, 2);
+          addLine(analysis.stop, "#e25549", "Stop Loss", 0, 2);
+          if (analysis.tp1) addLine(analysis.tp1, "#5fa878", "TP1", 0, 2);
+          if (analysis.tp2) addLine(analysis.tp2, "#5fa878", "TP2", 0, 2);
         }
         // Resistance merah / Support hijau, bernomor dari yang terdekat harga
         analysis.resistances.forEach((r, i) =>
-          addLine(r, "rgba(224,93,81,0.85)", `Resistance ${i + 1}`, 2),
+          addLine(r, "rgba(226,85,73,0.85)", `Resistance ${i + 1}`, 2),
         );
         analysis.supports.forEach((sp, i) =>
-          addLine(sp, "rgba(76,175,109,0.85)", `Support ${i + 1}`, 2),
+          addLine(sp, "rgba(95,168,120,0.85)", `Support ${i + 1}`, 2),
         );
       }
     }

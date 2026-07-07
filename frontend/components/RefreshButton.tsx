@@ -3,7 +3,17 @@
 import { useEffect, useState } from "react";
 import { RefreshCw } from "lucide-react";
 import { getRefreshStatus, triggerRefresh, STATIC } from "@/lib/api";
-import { timeAgo } from "@/lib/format";
+
+function fmtDateTime(iso: string | null): string {
+  if (!iso) return "—";
+  return new Date(iso).toLocaleString("id-ID", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
 
 export default function RefreshButton() {
   const [running, setRunning] = useState(false);
@@ -32,7 +42,6 @@ export default function RefreshButton() {
       const stillRunning = await poll();
       if (!stillRunning) {
         clearInterval(id);
-        // segarkan data halaman setelah refresh selesai
         if (typeof window !== "undefined") window.location.reload();
       }
     }, 3000);
@@ -40,8 +49,6 @@ export default function RefreshButton() {
   }, [running]);
 
   async function onClick() {
-    // Mode statis: data diperbarui otomatis oleh jadwal (GitHub Actions);
-    // tombol hanya memuat ulang snapshot terbaru.
     if (STATIC) {
       window.location.reload();
       return;
@@ -53,23 +60,19 @@ export default function RefreshButton() {
   }
 
   return (
-    <div className="flex items-center gap-3">
-      <span className="hidden text-xs text-muted sm:inline">
-        {STATIC
-          ? `Auto-update · ${timeAgo(last)}`
-          : running
-            ? `Memperbarui… (${cached} emiten)`
-            : `Update: ${timeAgo(last)}`}
-      </span>
+    <div className="flex flex-col items-end gap-0.5">
       <button
         onClick={onClick}
         disabled={running}
-        title={STATIC ? "Data diperbarui otomatis secara terjadwal" : "Tarik & analisa data terbaru"}
-        className="inline-flex items-center gap-2 rounded-xl border border-border bg-surface-2 px-3.5 py-2 text-sm font-medium text-text transition-colors hover:border-amber-400/40 hover:text-amber-400 disabled:opacity-60"
+        title={STATIC ? "Data diperbarui otomatis terjadwal" : "Tarik & analisa data terbaru"}
+        className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface-2 px-3.5 py-1.5 text-sm font-medium text-text transition-colors hover:border-terra/40 hover:text-terra disabled:opacity-60"
       >
-        <RefreshCw size={15} className={running ? "animate-spin" : ""} />
+        <RefreshCw size={14} className={running ? "animate-spin" : ""} />
         {STATIC ? "Muat ulang" : running ? "Memproses" : "Refresh"}
       </button>
+      <span className="text-[10px] text-muted">
+        {running ? `Memperbarui… (${cached} emiten)` : `Last updated: ${fmtDateTime(last)}`}
+      </span>
     </div>
   );
 }

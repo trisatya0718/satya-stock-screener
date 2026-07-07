@@ -1,20 +1,22 @@
 @import "tailwindcss";
 
-/* Palet warm: dark kecokelatan + aksen amber, tanpa glow/gradien. */
+/* Palet terracotta: tanah liat gelap + aksen terakota, nuansa editorial hangat. */
 @theme {
-  --color-bg: #171310;
-  --color-surface: #1e1915;
-  --color-surface-2: #272019;
-  --color-border: #372e24;
-  --color-muted: #a3988a;
-  --color-text: #ece4d8;
-  --color-accent: #e8a33d;
-  --color-accent-dim: #c98a2e;
-  --color-up: #4caf6d;
-  --color-down: #e05d51;
-  --color-warn: #e8a33d;
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --color-bg: #1b1411;
+  --color-surface: #251b16;
+  --color-surface-2: #30231c;
+  --color-border: #443228;
+  --color-muted: #b3a294;
+  --color-text: #f2e7de;
+  --color-terra: #d67d54;
+  --color-terra-dim: #b4613f;
+  --color-accent: #d67d54;
+  --color-up: #5fa878;
+  --color-down: #e25549;
+  --color-warn: #d9a03d;
+  --font-sans: var(--font-ss3), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-lora), Georgia, "Times New Roman", serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
 }
 
 html {
@@ -27,17 +29,23 @@ body {
   min-height: 100vh;
 }
 
+/* Judul memakai serif — kesan hangat & editorial */
+h1, h2 {
+  font-family: var(--font-serif);
+  letter-spacing: -0.01em;
+}
+
 ::selection {
-  background: rgba(232, 163, 61, 0.28);
+  background: rgba(214, 125, 84, 0.3);
 }
 
 ::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-thumb { background: #3b3228; border-radius: 8px; }
-::-webkit-scrollbar-thumb:hover { background: #4a3f32; }
+::-webkit-scrollbar-thumb { background: #46352a; border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: #574335; }
 ::-webkit-scrollbar-track { background: transparent; }
 
 @utility card {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: 14px;
+  border-radius: 12px;
 }

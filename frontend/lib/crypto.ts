@@ -31,18 +31,44 @@ export const HTF: Record<Interval, string> = {
   "1d": "1w",
 };
 
-const BINANCE = "https://api.binance.com/api/v3";
+// api.binance.com sering diblokir ISP Indonesia — pakai daftar host fallback.
+// data-api.binance.vision = mirror resmi khusus data publik (domain berbeda).
+const HOSTS = [
+  "https://data-api.binance.vision/api/v3",
+  "https://api.binance.com/api/v3",
+  "https://api1.binance.com/api/v3",
+];
+let hostIdx = 0; // ingat host yang terakhir berhasil supaya tak probing terus
+
+async function binanceFetch(path: string): Promise<Response> {
+  let lastErr: unknown = null;
+  for (let i = 0; i < HOSTS.length; i++) {
+    const idx = (hostIdx + i) % HOSTS.length;
+    try {
+      const res = await fetch(`${HOSTS[idx]}${path}`, {
+        cache: "no-store",
+        signal: AbortSignal.timeout(8000),
+      });
+      if (res.ok) {
+        hostIdx = idx;
+        return res;
+      }
+      lastErr = new Error(`HTTP ${res.status}`);
+    } catch (e) {
+      lastErr = e;
+    }
+  }
+  throw lastErr instanceof Error ? lastErr : new Error("Binance unreachable");
+}
 
 export async function fetchKlines(
   interval: string,
   limit = 400,
   symbol = "BTCUSDT",
 ): Promise<Candle[]> {
-  const res = await fetch(
-    `${BINANCE}/klines?symbol=${symbol}&interval=${interval}&limit=${limit}`,
-    { cache: "no-store" },
+  const res = await binanceFetch(
+    `/klines?symbol=${symbol}&interval=${interval}&limit=${limit}`,
   );
-  if (!res.ok) throw new Error(`Binance ${res.status}`);
   const rows: (string | number)[][] = await res.json();
   return rows.map((r) => ({
     time: Math.floor(Number(r[0]) / 1000),
@@ -55,10 +81,7 @@ export async function fetchKlines(
 }
 
 export async function fetchTicker(symbol = "BTCUSDT"): Promise<Ticker24h> {
-  const res = await fetch(`${BINANCE}/ticker/24hr?symbol=${symbol}`, {
-    cache: "no-store",
-  });
-  if (!res.ok) throw new Error(`Binance ${res.status}`);
+  const res = await binanceFetch(`/ticker/24hr?symbol=${symbol}`);
   const d = await res.json();
   return {
     lastPrice: Number(d.lastPrice),

@@ -84,7 +84,7 @@ export default function CryptoPage() {
           <p className="text-sm text-muted">
             Analisa teknikal live · update tiap 30 detik
             {updatedAt && ` · terakhir ${updatedAt.toLocaleTimeString("id-ID")}`} ·{" "}
-            <Link href="/info" className="text-amber-400 underline hover:no-underline">
+            <Link href="/info" className="text-terra underline hover:no-underline">
               disclaimer
             </Link>
           </p>
@@ -118,7 +118,7 @@ export default function CryptoPage() {
                   onClick={() => setInterval_(iv)}
                   className={`rounded-lg px-3 py-1.5 font-medium transition-colors ${
                     interval_ === iv
-                      ? "bg-amber-500/15 text-amber-400"
+                      ? "bg-terra/15 text-terra"
                       : "text-muted hover:text-text"
                   }`}
                 >
@@ -128,8 +128,8 @@ export default function CryptoPage() {
             </div>
             <span className="flex items-center gap-1.5 text-xs text-muted">
               <RefreshCw size={12} className={loading ? "animate-spin" : ""} />
-              live 30s · EMA20 <span className="text-sky-400">▬</span> EMA50{" "}
-              <span className="text-violet-400">▬</span>
+              live 30s · EMA20 <span className="text-terra">▬</span> EMA50{" "}
+              <span style={{color:"#a1887f"}}>▬</span>
             </span>
           </div>
           {candles.length > 0 ? (
@@ -154,7 +154,7 @@ export default function CryptoPage() {
             {a && a.bias !== "WAIT" && a.entry && a.stop ? (
               <div className="space-y-3">
                 <div className="grid grid-cols-2 gap-2 rounded-xl bg-surface-2/60 p-3">
-                  <LevelStat label="Entry" value={fmtUsd(a.entry)} icon={<Target size={12} className="text-sky-400" />} />
+                  <LevelStat label="Entry" value={fmtUsd(a.entry)} icon={<Target size={12} className="text-terra" />} />
                   <LevelStat
                     label={`Stop Loss (−${a.riskPct?.toFixed(1)}%)`}
                     value={fmtUsd(a.stop)}
@@ -263,11 +263,6 @@ export default function CryptoPage() {
         </div>
       </div>
 
-      <p className="flex items-center justify-center gap-1.5 pb-4 text-center text-xs text-muted">
-        <AlertTriangle size={12} className="text-amber-400" />
-        Strategi: trend-following confluence (EMA + RSI + MACD + volume + S/R, SL/TP
-        via ATR). Bukan ajakan beli/jual — kelola risiko Anda sendiri.
-      </p>
     </div>
   );
 }

@@ -13,10 +13,10 @@ import {
 import type { RatioPeriod } from "@/lib/api";
 
 const SERIES = [
-  { key: "gpm", name: "GPM", color: "#60a5fa" },
-  { key: "opm", name: "OPM", color: "#a78bfa" },
-  { key: "npm", name: "NPM", color: "#34d399" },
-  { key: "roe", name: "ROE", color: "#f59e0b" },
+  { key: "gpm", name: "GPM", color: "#e3b23c" },
+  { key: "opm", name: "OPM", color: "#cf8a5b" },
+  { key: "npm", name: "NPM", color: "#5fa878" },
+  { key: "roe", name: "ROE", color: "#d67d54" },
 ] as const;
 
 export default function RatioTrendChart({ ratios }: { ratios: RatioPeriod[] }) {
@@ -37,15 +37,15 @@ export default function RatioTrendChart({ ratios }: { ratios: RatioPeriod[] }) {
   return (
     <ResponsiveContainer width="100%" height={260}>
       <LineChart data={data} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
-        <CartesianGrid stroke="#232733" strokeDasharray="3 3" vertical={false} />
+        <CartesianGrid stroke="#443228" strokeDasharray="3 3" vertical={false} />
         <XAxis
           dataKey="period"
-          tick={{ fill: "#8b93a7", fontSize: 11 }}
+          tick={{ fill: "#b3a294", fontSize: 11 }}
           tickLine={false}
-          axisLine={{ stroke: "#232733" }}
+          axisLine={{ stroke: "#443228" }}
         />
         <YAxis
-          tick={{ fill: "#8b93a7", fontSize: 11 }}
+          tick={{ fill: "#b3a294", fontSize: 11 }}
           tickLine={false}
           axisLine={false}
           width={40}
@@ -53,8 +53,8 @@ export default function RatioTrendChart({ ratios }: { ratios: RatioPeriod[] }) {
         />
         <Tooltip
           contentStyle={{
-            background: "#12141a",
-            border: "1px solid #232733",
+            background: "#251b16",
+            border: "1px solid #443228",
             borderRadius: 12,
             fontSize: 12,
           }}

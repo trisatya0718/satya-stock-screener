@@ -81,7 +81,7 @@ export default function Dashboard() {
           {ihsg && ihsg.history.length > 0 ? (
             <PriceAreaChart
               data={ihsg.history}
-              color={up ? "#34d399" : "#ef4444"}
+              color={up ? "#5fa878" : "#e25549"}
             />
           ) : (
             <div className="flex h-[260px] items-center justify-center text-sm text-muted">
@@ -114,7 +114,7 @@ export default function Dashboard() {
             <div className="text-xs uppercase tracking-wide text-muted">
               Skor Fundamental Rata-rata
             </div>
-            <div className="mt-2 text-3xl font-bold tabular-nums text-emerald-400">
+            <div className="mt-2 text-3xl font-bold tabular-nums text-up">
               {ov?.avg_score ?? "—"}
             </div>
             <div className="text-xs text-muted">
@@ -127,7 +127,7 @@ export default function Dashboard() {
       {/* Top picks */}
       <div>
         <div className="mb-3 flex items-center gap-2">
-          <Sparkles size={18} className="text-emerald-400" />
+          <Sparkles size={18} className="text-terra" />
           <h2 className="text-lg font-semibold">Top Picks</h2>
           <span className="text-sm text-muted">
             skor ≥ 60, diurut upside tertinggi
@@ -142,13 +142,13 @@ export default function Dashboard() {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {picks.map((r) => (
               <Link key={r.code} href={`/stocks/${r.code}`}>
-                <Card className="transition-colors hover:border-amber-400/40">
+                <Card className="transition-colors hover:border-terra/40">
                   <div className="flex items-start justify-between">
                     <div>
                       <div className="flex items-center gap-2">
                         <span className="text-lg font-bold">{r.code}</span>
                         {r.is_bank && (
-                          <Building2 size={14} className="text-sky-400" />
+                          <Building2 size={14} className="text-muted" />
                         )}
                       </div>
                       <div className="line-clamp-1 text-xs text-muted">{r.name}</div>

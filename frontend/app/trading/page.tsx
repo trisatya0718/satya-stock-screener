@@ -2,13 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import {
-  AlertTriangle,
-  TrendingUp,
-  Target,
-  ShieldAlert,
-  Activity,
-} from "lucide-react";
+import { TrendingUp, Target } from "lucide-react";
 import { getTrading, TradingPick } from "@/lib/api";
 import { Card, Badge } from "@/components/ui";
 import { changeColor, fmtPct, fmtPrice, timeAgo } from "@/lib/format";
@@ -30,25 +24,15 @@ export default function TradingPage() {
   return (
     <div className="mx-auto max-w-5xl space-y-5">
       <div>
-        <h1 className="flex items-center gap-2 text-2xl font-bold">
-          <Activity size={22} className="text-amber-400" /> Trading Setup
-        </h1>
+        <h1 className="text-2xl font-bold">Trading Swing Setup</h1>
         <p className="text-sm text-muted">
-          Sinyal swing teknikal (horizon ~1–3 hari) · diperbarui {timeAgo(updated)} ·
-          maks 10 setup terbaik dari ~760 emiten likuid.
+          Horizon ~1–3 hari · diperbarui {timeAgo(updated)} · maks 10 setup terbaik
+          dari ~760 emiten likuid ·{" "}
+          <Link href="/info" className="text-terra underline hover:no-underline">
+            disclaimer
+          </Link>
         </p>
       </div>
-
-      <p className="flex items-start gap-2 text-xs leading-relaxed text-muted">
-        <ShieldAlert size={14} className="mt-0.5 shrink-0 text-amber-400" />
-        <span>
-          Sinyal teknikal spekulatif — bukan rekomendasi, tanpa jaminan win rate.
-          Disiplin stop loss & money management wajib.{" "}
-          <Link href="/info" className="text-amber-400 underline hover:no-underline">
-            Selengkapnya
-          </Link>
-        </span>
-      </p>
 
       {loading ? (
         <div className="py-16 text-center text-muted">Memuat setup…</div>
@@ -67,7 +51,7 @@ export default function TradingPage() {
                     <span className="text-xs text-muted">#{i + 1}</span>
                     <Link
                       href={`/stocks/${p.code}`}
-                      className="text-lg font-bold hover:text-emerald-400"
+                      className="text-lg font-bold hover:text-terra"
                     >
                       {p.code}
                     </Link>
@@ -91,7 +75,7 @@ export default function TradingPage() {
               <div className="grid grid-cols-3 gap-2 rounded-xl bg-surface-2/60 p-3 text-center">
                 <div>
                   <div className="flex items-center justify-center gap-1 text-[10px] uppercase text-muted">
-                    <Target size={11} className="text-sky-400" /> Entry
+                    <Target size={11} className="text-terra" /> Entry
                   </div>
                   <div className="mt-0.5 font-semibold tabular-nums">{fmtPrice(p.entry)}</div>
                 </div>
@@ -129,7 +113,7 @@ export default function TradingPage() {
                 {p.signals.map((s) => (
                   <span
                     key={s}
-                    className="inline-flex items-center gap-1 rounded-md border border-emerald-500/25 bg-emerald-500/10 px-2 py-0.5 text-[11px] text-emerald-400"
+                    className="inline-flex items-center gap-1 rounded-md border border-up/25 bg-up/10 px-2 py-0.5 text-[11px] text-up"
                   >
                     <TrendingUp size={10} />
                     {s}
@@ -141,11 +125,6 @@ export default function TradingPage() {
         </div>
       )}
 
-      <p className="flex items-center justify-center gap-1.5 pb-4 text-center text-xs text-muted">
-        <AlertTriangle size={12} className="text-amber-400" />
-        Bukan ajakan jual/beli. Trading saham berisiko tinggi — selalu riset & kelola
-        risiko Anda sendiri.
-      </p>
     </div>
   );
 }
