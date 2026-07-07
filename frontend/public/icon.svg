@@ -1,0 +1,15 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Satya Stock Screener — bukit "grafik saham" + matahari, gaya poster terracotta -->
+  <rect width="512" height="512" fill="#bd5d3a"/>
+  <!-- matahari -->
+  <circle cx="352" cy="158" r="62" fill="#f6ede2"/>
+  <!-- punggung bukit belakang (garis chart) -->
+  <path d="M0 344 L60 306 L124 330 L196 262 L260 298 L324 234 L392 270 L452 206 L512 238 L512 512 L0 512 Z"
+        fill="#e8c19a"/>
+  <!-- punggung bukit depan (garis chart naik ke kanan) -->
+  <path d="M0 408 L68 378 L136 402 L212 336 L280 366 L352 292 L424 322 L512 230 L512 512 L0 512 Z"
+        fill="#f6ede2"/>
+  <!-- aksen lembah tipis di bukit depan -->
+  <path d="M0 408 L68 378 L136 402 L212 336 L280 366 L352 292 L424 322 L512 230"
+        fill="none" stroke="#bd5d3a" stroke-opacity="0.18" stroke-width="6"/>
+</svg>

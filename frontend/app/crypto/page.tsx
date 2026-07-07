@@ -9,6 +9,8 @@ import {
   PauseCircle,
   RefreshCw,
   AlertTriangle,
+  Bell,
+  BellOff,
 } from "lucide-react";
 import { Card, Badge } from "@/components/ui";
 import CryptoChart from "@/components/CryptoChart";
@@ -39,7 +41,60 @@ export default function CryptoPage() {
   const [updatedAt, setUpdatedAt] = useState<Date | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [notifOn, setNotifOn] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    setNotifOn(
+      typeof Notification !== "undefined" &&
+        Notification.permission === "granted" &&
+        localStorage.getItem("btcNotif") === "1",
+    );
+  }, []);
+
+  async function toggleNotif() {
+    if (typeof Notification === "undefined") {
+      alert(
+        "Browser ini tidak mendukung notifikasi web (mis. Safari iPhone). Pakai notifikasi Telegram — cek tab Info.",
+      );
+      return;
+    }
+    if (notifOn) {
+      localStorage.setItem("btcNotif", "0");
+      setNotifOn(false);
+      return;
+    }
+    const p = await Notification.requestPermission();
+    if (p === "granted") {
+      localStorage.setItem("btcNotif", "1");
+      setNotifOn(true);
+      new Notification("Notifikasi sinyal aktif", {
+        body: "Kamu akan diberi tahu saat muncul sinyal BTC/USDT (selama tab ini terbuka).",
+        icon: "/icon-192.png",
+      });
+    }
+  }
+
+  // Notifikasi browser saat bias BERUBAH menjadi LONG/SHORT (tab harus terbuka).
+  function maybeNotify(a2: Analysis, iv: Interval) {
+    try {
+      const prev = localStorage.getItem("btcLastBias") ?? "WAIT";
+      if (a2.bias === prev) return;
+      localStorage.setItem("btcLastBias", a2.bias);
+      const on =
+        typeof Notification !== "undefined" &&
+        Notification.permission === "granted" &&
+        localStorage.getItem("btcNotif") === "1";
+      if (on && a2.bias !== "WAIT" && a2.entry && a2.stop) {
+        new Notification(`Sinyal ${a2.bias} — BTC/USDT (${iv})`, {
+          body: `Entry ${fmtUsd(a2.entry)} · SL ${fmtUsd(a2.stop)} · TP1 ${fmtUsd(a2.tp1)}. Bukan rekomendasi — pakai stop loss.`,
+          icon: "/icon-192.png",
+        });
+      }
+    } catch {
+      /* Notification API bisa tak tersedia — abaikan */
+    }
+  }
 
   const load = useCallback(async (iv: Interval) => {
     try {
@@ -52,7 +107,9 @@ export default function CryptoPage() {
       setCandles(main);
       setTicker(tk);
       setFg(sentiment);
-      setAnalysis(analyze(main, htf));
+      const a2 = analyze(main, htf);
+      setAnalysis(a2);
+      maybeNotify(a2, iv);
       setUpdatedAt(new Date());
       setErr(null);
     } catch (e) {
@@ -60,6 +117,7 @@ export default function CryptoPage() {
     } finally {
       setLoading(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -126,10 +184,20 @@ export default function CryptoPage() {
                 </button>
               ))}
             </div>
-            <span className="flex items-center gap-1.5 text-xs text-muted">
+            <span className="flex items-center gap-2 text-xs text-muted">
               <RefreshCw size={12} className={loading ? "animate-spin" : ""} />
-              live 30s · EMA20 <span className="text-terra">▬</span> EMA50{" "}
-              <span style={{color:"#8d7264"}}>▬</span>
+              live 30s
+              <button
+                onClick={toggleNotif}
+                title="Notifikasi sinyal (browser desktop; iPhone: pakai Telegram)"
+                className={`inline-flex items-center gap-1 rounded-lg border px-2 py-1 transition-colors ${
+                  notifOn
+                    ? "border-terra/40 bg-terra/10 text-terra"
+                    : "border-border text-muted hover:text-text"
+                }`}
+              >
+                {notifOn ? <Bell size={12} /> : <BellOff size={12} />} Notif
+              </button>
             </span>
           </div>
           {candles.length > 0 ? (

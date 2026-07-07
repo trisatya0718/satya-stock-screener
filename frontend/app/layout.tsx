@@ -14,6 +14,23 @@ export const metadata: Metadata = {
   title: "Satya Stock Screener — Fundamental Saham IDX",
   description:
     "Monitor & analisa fundamental saham Indonesia: screening DuPont, valuasi PE/PB band, dan justified PBV untuk bank.",
+  manifest: "/site.webmanifest",
+  icons: {
+    icon: [
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
+  appleWebApp: {
+    capable: true,
+    title: "Satya",
+    statusBarStyle: "default",
+  },
+};
+
+export const viewport = {
+  themeColor: "#f6ede2",
 };
 
 export default function RootLayout({

@@ -1,0 +1,39 @@
+name: Sinyal BTC (Telegram)
+
+# Cek sinyal BTC/USDT tiap ~30 menit; kirim Telegram saat sinyal berubah.
+# Butuh repo Secrets: TELEGRAM_BOT_TOKEN & TELEGRAM_CHAT_ID (lewati bila kosong).
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch: {}
+
+concurrency:
+  group: btc-signal
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # state bias terakhir antar-run (dedupe notifikasi)
+      - uses: actions/cache@v4
+        with:
+          path: btc_state.json
+          key: btc-state-${{ github.run_id }}
+          restore-keys: btc-state-
+
+      - run: pip install requests
+
+      - name: Cek sinyal & kirim Telegram
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          STATE_FILE: btc_state.json
+        run: python backend/btc_signal_notify.py
