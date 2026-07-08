@@ -119,11 +119,12 @@ export default function InfoPage() {
 
       <Card className="border-amber-500/30">
         <h2 className="mb-2 text-base font-semibold text-amber-600">
-          Tab Crypto (BTC/USDT)
+          Tab Live (BTC/USDT & XAU/USD)
         </h2>
         <p className="text-sm leading-relaxed text-muted">
           Analisa teknikal <b className="text-text">realtime</b> (data Binance, update
-          tiap 30 detik) dengan strategi{" "}
+          tiap 30 detik; XAU/USD memakai PAXG — token emas 1:1 oz, harga ≈ spot)
+          dengan strategi{" "}
           <b className="text-text">trend-following confluence</b>: sinyal LONG/SHORT
           hanya muncul bila beberapa indikator searah sekaligus — tren EMA50/EMA200,
           konfirmasi timeframe lebih besar, MACD, RSI. Entry / Stop Loss / TP1 / TP2

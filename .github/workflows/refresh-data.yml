@@ -43,5 +43,8 @@ jobs:
             echo "Tidak ada perubahan data."
           else
             git commit -m "chore: refresh data saham"
+            # rebase dulu: hindari gagal push saat ada commit baru masuk
+            # bersamaan (race dengan push kode dari lokal)
+            git pull --rebase origin main
             git push
           fi

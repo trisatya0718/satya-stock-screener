@@ -8,7 +8,7 @@ const NAV = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
   { href: "/screener", label: "Screener", icon: Filter },
   { href: "/trading", label: "Trading", icon: Activity },
-  { href: "/crypto", label: "Crypto", icon: Bitcoin },
+  { href: "/crypto", label: "Live", icon: Bitcoin },
   { href: "/info", label: "Info", icon: Info },
 ];
 

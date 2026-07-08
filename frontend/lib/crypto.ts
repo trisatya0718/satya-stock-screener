@@ -23,6 +23,27 @@ export interface Ticker24h {
 
 export type Interval = "15m" | "1h" | "4h" | "1d";
 
+// Simbol yang didukung halaman Live. XAU/USD memakai PAXGUSDT (PAX Gold:
+// 1 token = 1 troy oz emas fisik) — harga ≈ spot XAU/USD dengan selisih kecil.
+export interface SymbolCfg {
+  key: string;
+  label: string;
+  api: string; // simbol di API Binance
+  note?: string;
+  fgRelevant: boolean; // Fear & Greed hanya relevan untuk crypto
+}
+
+export const SYMBOLS: SymbolCfg[] = [
+  { key: "BTCUSDT", label: "BTC / USDT", api: "BTCUSDT", fgRelevant: true },
+  {
+    key: "XAUUSD",
+    label: "XAU / USD",
+    api: "PAXGUSDT",
+    note: "harga via PAXG (1 token = 1 oz emas fisik) ≈ spot XAU/USD",
+    fgRelevant: false,
+  },
+];
+
 // timeframe konfirmasi tren (lebih besar) untuk tiap timeframe utama
 export const HTF: Record<Interval, string> = {
   "15m": "4h",

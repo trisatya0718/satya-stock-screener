@@ -39,8 +39,15 @@ def get(path: str):
     raise last  # type: ignore[misc]
 
 
-def klines(interval: str, limit: int):
-    rows = get(f"/klines?symbol=BTCUSDT&interval={interval}&limit={limit}")
+# Simbol yang dipantau. XAU/USD memakai PAXGUSDT (1 token = 1 oz emas ≈ spot).
+SYMBOLS = [
+    {"key": "BTCUSDT", "api": "BTCUSDT", "label": "BTC/USDT"},
+    {"key": "XAUUSD", "api": "PAXGUSDT", "label": "XAU/USD (emas, via PAXG)"},
+]
+
+
+def klines(interval: str, limit: int, symbol: str = "BTCUSDT"):
+    rows = get(f"/klines?symbol={symbol}&interval={interval}&limit={limit}")
     return [
         {"h": float(r[2]), "l": float(r[3]), "c": float(r[4])}
         for r in rows
@@ -210,42 +217,51 @@ def main():
         print("Secrets TELEGRAM_BOT_TOKEN/TELEGRAM_CHAT_ID belum di-set — lewati.")
         return
 
-    try:
-        a = analyze(klines("1h", 400), klines("4h", 250))
-    except Exception as e:  # noqa: BLE001
-        # Jangan gagalkan job terjadwal (menghindari spam email) — cukup log.
-        print(f"GAGAL ambil data harga: {e}")
-        return
-
-    prev = "WAIT"
+    state = {}
     if os.path.exists(STATE_FILE):
         try:
-            prev = json.load(open(STATE_FILE)).get("bias", "WAIT")
+            state = json.load(open(STATE_FILE))
+            if "bias" in state:  # migrasi format lama (single-symbol)
+                state = {"BTCUSDT": state["bias"]}
         except Exception:  # noqa: BLE001
-            pass
+            state = {}
 
-    print(f"bias={a['bias']} (sebelumnya {prev}) skor={a['score']:+d} "
-          f"harga={a['price']:.0f} RSI={a['rsi']:.0f}")
+    for s in SYMBOLS:
+        try:
+            a = analyze(klines("1h", 400, s["api"]), klines("4h", 250, s["api"]))
+        except Exception as e:  # noqa: BLE001
+            # Jangan gagalkan job terjadwal (menghindari spam email) — cukup log.
+            print(f"[{s['key']}] GAGAL ambil data harga: {e}")
+            continue
 
-    if a["bias"] != prev:
-        if a["bias"] != "WAIT":
-            arah = "🟢 LONG" if a["bias"] == "LONG" else "🔴 SHORT"
-            text = (
-                f"{arah} <b>BTC/USDT</b> (1h)\n"
-                f"Harga {fmt(a['price'])} · skor {a['score']:+d} · RSI {a['rsi']:.0f}\n\n"
-                f"Entry: <b>{fmt(a['entry'])}</b>\n"
-                f"Stop Loss: <b>{fmt(a['stop'])}</b>\n"
-                f"TP1: <b>{fmt(a['tp1'])}</b> · TP2: <b>{fmt(a['tp2'])}</b>\n\n"
-                f"Sinyal teknikal otomatis — bukan rekomendasi. Selalu pakai stop loss.\n{SITE}"
-            )
+        prev = state.get(s["key"], "WAIT")
+        print(f"[{s['key']}] bias={a['bias']} (sebelumnya {prev}) "
+              f"skor={a['score']:+d} harga={a['price']:.0f} RSI={a['rsi']:.0f}")
+
+        if a["bias"] != prev:
+            if a["bias"] != "WAIT":
+                arah = "🟢 LONG" if a["bias"] == "LONG" else "🔴 SHORT"
+                text = (
+                    f"{arah} <b>{s['label']}</b> (1h)\n"
+                    f"Harga {fmt(a['price'])} · skor {a['score']:+d} · RSI {a['rsi']:.0f}\n\n"
+                    f"Entry: <b>{fmt(a['entry'])}</b>\n"
+                    f"Stop Loss: <b>{fmt(a['stop'])}</b>\n"
+                    f"TP1: <b>{fmt(a['tp1'])}</b> · TP2: <b>{fmt(a['tp2'])}</b>\n\n"
+                    f"Sinyal teknikal otomatis — bukan rekomendasi. Selalu pakai stop loss.\n{SITE}"
+                )
+            else:
+                text = f"⚪ Sinyal {prev} {s['label']} berakhir → WAIT (confluence melemah).\n{SITE}"
+            try:
+                send_telegram(token, chat, text)
+                print(f"[{s['key']}] Notifikasi Telegram terkirim.")
+                state[s["key"]] = a["bias"]
+            except Exception as e:  # noqa: BLE001
+                print(f"[{s['key']}] GAGAL kirim Telegram: {e}")
         else:
-            text = f"⚪ Sinyal {prev} BTC/USDT berakhir → WAIT (confluence melemah).\n{SITE}"
-        send_telegram(token, chat, text)
-        print("Notifikasi Telegram terkirim.")
-    else:
-        print("Tidak ada perubahan sinyal — tidak kirim.")
+            state[s["key"]] = a["bias"]
+            print(f"[{s['key']}] Tidak ada perubahan — tidak kirim.")
 
-    json.dump({"bias": a["bias"]}, open(STATE_FILE, "w"))
+    json.dump(state, open(STATE_FILE, "w"))
 
 
 if __name__ == "__main__":
